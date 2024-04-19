@@ -1,4 +1,4 @@
-GET http://localhost:8001/member/hello
+GET http://localhost:8001/Member/hello
 Accept: application/json
 
 <> 2024-04-18T181527.200.json

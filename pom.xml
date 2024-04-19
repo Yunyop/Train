@@ -15,8 +15,9 @@
     <name>Train</name>
     <description>Train</description>
     <modules>
-        <module>Member</module>
+        <module>member</module>
         <module>common</module>
+        <module>gateway</module>
     </modules>
     <properties>
         <java.version>21</java.version>
