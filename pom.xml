@@ -6,7 +6,8 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.4</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
+        <!-- lookup parent from repository -->
     </parent>
     <groupId>com.Yun</groupId>
     <artifactId>Train</artifactId>
@@ -40,13 +41,31 @@
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
-                <version>5.6.3</version>
+                <version>5.8.25</version>
             </dependency>
             <dependency>
                 <groupId>com.Yun</groupId>
                 <artifactId>common</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
+<!--            集成mybatis-->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>3.0.3</version>
+            </dependency>
+            <!--            集成mysql链接-->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>8.0.33</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>3.5.14</version>
+            </dependency>
+
         </dependencies>
 
     </dependencyManagement>
