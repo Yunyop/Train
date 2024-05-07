@@ -72,7 +72,7 @@ public class LogAspect {
         long startTime = System.currentTimeMillis();
         Object result = joinPoint.proceed();
 //        排除字段，敏感字符或太长字段不显示：身份证、手机号、邮箱、密码等
-        String[] excludeProperties = {"mobile"};
+        String[] excludeProperties = {};
         PropertyPreFilters filters = new PropertyPreFilters();
         PropertyPreFilters.MySimplePropertyPreFilter excludefilter = filters.addFilter();
         excludefilter.addExcludes(excludeProperties);
