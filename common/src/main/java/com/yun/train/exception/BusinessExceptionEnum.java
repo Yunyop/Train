@@ -1,7 +1,7 @@
 package com.yun.train.exception;
 
 public enum BusinessExceptionEnum {
-    MEMBER_MOBILE_EXIST("手机号已存在");
+    MEMBER_MOBILE_EXIST("手机号已注册");
 
     BusinessExceptionEnum(String desc) {
         this.desc = desc;
