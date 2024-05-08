@@ -7,6 +7,7 @@ import com.yun.train.exception.BusinessException;
 import com.yun.train.exception.BusinessExceptionEnum;
 import com.yun.train.mapper.MemberMapper;
 import com.yun.train.req.MemberRegisterReq;
+import com.yun.train.util.SnowUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class MemberService {
             throw new BusinessException(BusinessExceptionEnum.MEMBER_MOBILE_EXIST);
         }
         Member member=new Member();
-        member.setId(System.currentTimeMillis());
+        member.setId(SnowUtil.getSnowflakeNextId());
         member.setMobile(mobile);
         memberMapper.insert(member);
         return member.getId();
