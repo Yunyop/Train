@@ -3,6 +3,8 @@ package com.yun.train.service;
 import cn.hutool.core.collection.CollUtil;
 import com.yun.train.domain.Member;
 import com.yun.train.domain.MemberExample;
+import com.yun.train.exception.BusinessException;
+import com.yun.train.exception.BusinessExceptionEnum;
 import com.yun.train.mapper.MemberMapper;
 import com.yun.train.req.MemberRegisterReq;
 import jakarta.annotation.Resource;
@@ -24,7 +26,7 @@ public class MemberService {
         List<Member> members = memberMapper.selectByExample(memberExample);
         if(CollUtil.isNotEmpty(members)){
 //            return members.get(0).getId();
-            throw new RuntimeException("手机号已注册");
+            throw new BusinessException(BusinessExceptionEnum.MEMBER_MOBILE_EXIST);
         }
         Member member=new Member();
         member.setId(System.currentTimeMillis());
