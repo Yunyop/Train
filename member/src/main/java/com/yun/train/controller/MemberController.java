@@ -1,8 +1,10 @@
 package com.yun.train.controller;
 
+import com.yun.train.req.MemberLoginReq;
 import com.yun.train.req.MemberRegisterReq;
 import com.yun.train.req.MemberSendCodeReq;
 import com.yun.train.resp.CommonResp;
+import com.yun.train.resp.MemberLoginResp;
 import com.yun.train.service.MemberService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -25,13 +27,18 @@ public class MemberController {
         return new CommonResp<>(count);
     }
     @PostMapping("/register")
-    public CommonResp<Long> register(@Valid MemberRegisterReq memberRegisterReq) {
-        long register = memberService.register(memberRegisterReq);
+    public CommonResp<Long> register(@Valid MemberRegisterReq req) {
+        long register = memberService.register(req);
         return new CommonResp<>(register);
     }
     @PostMapping("/send-code")
-    public CommonResp<Long> sendCode(@Valid MemberSendCodeReq memberRegisterReq) {
-        memberService.sendCode(memberRegisterReq);
+    public CommonResp<Long> sendCode(@Valid MemberSendCodeReq req) {
+        memberService.sendCode(req);
         return new CommonResp<>();
+    }
+    @PostMapping("/login")
+    public CommonResp<MemberLoginResp> login(@Valid MemberLoginReq req) {
+        MemberLoginResp resp = memberService.login(req);
+        return new CommonResp<>(resp);
     }
 }
