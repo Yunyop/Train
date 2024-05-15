@@ -12,15 +12,18 @@ POST http://localhost:8000/member/member/send-code
 Content-Type: application/json
 
 {
- "mobile": "13088015476",
-  "code": "8888"
+ "mobile": "13088015476"
+
 }
 
 ###
 
 POST http://localhost:8000/member/member/login
-Content-Type: application/x-www-form-urlencoded
+Content-Type: application/json
 
-mobile =13088015476&code=8888
+{
+  "mobile":"13088015476",
+  "code":"8888"
+}
 
 ###
