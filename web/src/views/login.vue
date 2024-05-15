@@ -48,7 +48,7 @@ const loginForm = reactive({
 });
 
 const sendCode = () => {
-  axios.post("http://localhost:8000/member/member/send-code",{
+  axios.post("/member/member/send-code",{
     mobile: loginForm.mobile,
   }).then(resp=>{
     let data = resp.data;
@@ -62,7 +62,7 @@ const sendCode = () => {
 };
 
 const login = () => {
-  axios.post("http://localhost:8000/member/member/login",loginForm).then(resp=>{
+  axios.post("/member/member/login",loginForm).then(resp=>{
     let data = resp.data;
     if (data.success) {
       notification.success({description:'登录成功'});
