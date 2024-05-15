@@ -41,20 +41,29 @@
 </template>
 <script setup>
 import { reactive } from 'vue';
+import axios  from "axios";
+
 const loginForm = reactive({
   mobile: '13088015476',
   code: '',
 });
+
 const sendCode = () => {
-  // console.log('use value', loginForm);
-  // console.log('or use this.value', loginForm.code);
+  axios.post("http://localhost:8000/member/member/send-code",{
+    mobile: loginForm.mobile,
+  }).then(resp=>{
+    console.log(resp);
+  })
 };
+
 const onFinish = values => {
   console.log('Success:', values);
 };
+
 const onFinishFailed = errorInfo => {
   console.log('Failed:', errorInfo);
 };
+
 // 验证码组件
 </script>
 <style>
