@@ -6,8 +6,6 @@
           :model="loginForm"
           name="basic"
           autocomplete="off"
-          @finish="onFinish"
-          @finishFailed="onFinishFailed"
       >
         <a-form-item
             label=""
@@ -33,7 +31,7 @@
           </a-input>
         </a-form-item>
         <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-          <a-button type="primary" html-type="submit">登录</a-button>
+          <a-button type="primary" block @click="login">登录</a-button>
         </a-form-item>
       </a-form>
     </a-col>
@@ -42,6 +40,7 @@
 <script setup>
 import { reactive } from 'vue';
 import axios  from "axios";
+import {notification} from "ant-design-vue";
 
 const loginForm = reactive({
   mobile: '13088015476',
@@ -53,16 +52,28 @@ const sendCode = () => {
     mobile: loginForm.mobile,
   }).then(resp=>{
     console.log(resp);
+    let data = resp.data;
+    if (data.success) {
+      notification.success({description: "发送验证码成功"});
+      loginForm.code = "8888";
+    }else {
+      notification.error({description:data.message});
+    }
   })
 };
 
-const onFinish = values => {
-  console.log('Success:', values);
-};
+const login = () => {
+  axios.post("http://localhost:8000/member/member/login",loginForm).then(resp=>{
+    let data = resp.data;
+    if (data.success) {
+      notification.success({description:'登录成功'});
+      console.log("登录成功",data.content);
+    }else {
+      notification.error({description:data.message});
+    }
+  })
+}
 
-const onFinishFailed = errorInfo => {
-  console.log('Failed:', errorInfo);
-};
 
 // 验证码组件
 </script>
