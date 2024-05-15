@@ -30,7 +30,7 @@
             </template>
           </a-input>
         </a-form-item>
-        <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
+        <a-form-item >
           <a-button type="primary" block @click="login">登录</a-button>
         </a-form-item>
       </a-form>
@@ -41,6 +41,9 @@
 import { reactive } from 'vue';
 import axios  from "axios";
 import {notification} from "ant-design-vue";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
 
 const loginForm = reactive({
   mobile: '13088015476',
@@ -66,6 +69,8 @@ const login = () => {
     let data = resp.data;
     if (data.success) {
       notification.success({description:'登录成功'});
+      // 登录成功跳转控制台主页
+      router.push("/");
     }else {
       notification.error({description:data.message});
     }
