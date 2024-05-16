@@ -1,18 +1,7 @@
 <template>
-  <a-layout id="components-layout-demo-top-side">
-    <a-layout-header class="header">
-      <div class="logo" />
-      <a-menu
-          v-model:selectedKeys="selectedKeys1"
-          theme="dark"
-          mode="horizontal"
-          :style="{ lineHeight: '64px' }"
-      >
-        <a-menu-item key="1">nav 1</a-menu-item>
-        <a-menu-item key="2">nav 2</a-menu-item>
-        <a-menu-item key="3">nav 3</a-menu-item>
-      </a-menu>
-    </a-layout-header>
+  <a-layout id="components-layout-demo-top-side" >
+    <the-header-view></the-header-view>
+
     <a-layout-content style="padding: 0 50px">
       <a-breadcrumb style="margin: 16px 0">
         <a-breadcrumb-item>Home</a-breadcrumb-item>
@@ -77,7 +66,7 @@
 </template>
 <script setup>
 import { ref } from 'vue';
-const selectedKeys1 = ref(['2']);
+import TheHeaderView from "@/components/the-header.vue";
 const selectedKeys2 = ref(['1']);
 const openKeys = ref(['sub1']);
 </script>
