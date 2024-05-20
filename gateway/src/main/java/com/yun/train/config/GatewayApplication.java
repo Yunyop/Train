@@ -1,4 +1,4 @@
-package com.yun.train.gateway.config;
+package com.yun.train.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
