@@ -3,7 +3,6 @@ package com.yun.train.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.jwt.JWTUtil;
 import com.yun.train.domain.Member;
 import com.yun.train.domain.MemberExample;
 import com.yun.train.exception.BusinessException;
@@ -13,6 +12,7 @@ import com.yun.train.req.MemberLoginReq;
 import com.yun.train.req.MemberRegisterReq;
 import com.yun.train.req.MemberSendCodeReq;
 import com.yun.train.resp.MemberLoginResp;
+import com.yun.train.util.JwtUtil;
 import com.yun.train.util.SnowUtil;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class MemberService {
@@ -84,9 +83,7 @@ public class MemberService {
             throw new BusinessException(BusinessExceptionEnum.MEMBER_MOBILE_CODE_ERROR);
         }
         MemberLoginResp memberLoginResp = BeanUtil.copyProperties(memberDB, MemberLoginResp.class);
-        Map<String, Object> map = BeanUtil.beanToMap(memberLoginResp);
-        String key="Yun12306";
-        String token = JWTUtil.createToken(map, key.getBytes());
+        String token = JwtUtil.createToken(memberLoginResp.getId(), memberLoginResp.getMobile());
         memberLoginResp.setToken(token);
         return memberLoginResp;
     }
