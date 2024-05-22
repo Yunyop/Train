@@ -1,6 +1,5 @@
 package com.yun.train.util;
 
-import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.crypto.GlobalBouncyCastleProvider;
 import cn.hutool.json.JSONObject;
@@ -12,6 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static cn.hutool.core.date.DateField.SECOND;
 
 public class JwtUtil {
     private static final Logger LOG = LoggerFactory.getLogger(JwtUtil.class);
@@ -25,7 +26,7 @@ public class JwtUtil {
         LOG.info("开始生成JWT token，id：{}，mobile：{}", id, mobile);
         GlobalBouncyCastleProvider.setUseBouncyCastle(false);
         DateTime now = DateTime.now();
-        DateTime expTime = now.offsetNew(DateField.SECOND, 10);
+        DateTime expTime = now.offsetNew(SECOND, 10);
         Map<String, Object> payload = new HashMap<>();
         // 签发时间
         payload.put(JWTPayload.ISSUED_AT, now);
@@ -71,7 +72,7 @@ public class JwtUtil {
         createToken(1L, "123");
 
         String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE3MTYyMDg0MjYsIm1vYmlsZSI6IjEyMyIsImlkIjoxLCJleHAiOjE3MTYyOTQ4MjYsImlhdCI6MTcxNjIwODQyNn0.DHYCTqiaLoz66qmCgac-y7N3eO-4jiOiIA8FUlXXpBg";
-        validate(token);
+//        validate(token);
 
         getJSONObject(token);
     }
