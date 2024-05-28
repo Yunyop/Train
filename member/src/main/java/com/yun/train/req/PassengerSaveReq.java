@@ -1,7 +1,6 @@
 package com.yun.train.req;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 
@@ -19,7 +18,9 @@ public class PassengerSaveReq {
     private Date createTime;
 
     private Date updateTime;
-    @NotNull(message = "[会员id]不能为空")
+
+//    @NotNull(message = "[会员id]不能为空")
+
     private Long memberId;
 
     public Long getId() {
