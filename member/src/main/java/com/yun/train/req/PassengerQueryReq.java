@@ -1,6 +1,6 @@
 package com.yun.train.req;
 
-public class PassengerQueryReq {
+public class PassengerQueryReq extends PageReq{
 
     private Long memberId;
 
