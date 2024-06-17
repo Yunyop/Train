@@ -5,7 +5,7 @@
   <a-table
       :dataSource="passengers"
       :columns="columns"
-
+      :pagination="pagination"
   />
   <a-modal v-model:visible="visible" title="乘车人" @ok="handleOk"
            ok-text="确认" cancel-text="取消">
@@ -38,6 +38,13 @@ import {notification} from "ant-design-vue";
 export default defineComponent({
   setup(){
     const visible=ref(false);
+
+    // 分页三个固定属性
+    const pagination=reactive({
+      current: 1,
+      pageSize:2,
+      total:0
+    });
 
     const passenger=reactive({
       id: undefined,
@@ -93,6 +100,7 @@ export default defineComponent({
         let data=response.data;
         if(data.success){
           passengers.value=data.content.list;
+          pagination.total=data.content.total;
         }else {
           notification.error({ description: data.message });
         }
@@ -115,6 +123,7 @@ export default defineComponent({
       passengers,
       columns,
       handleQuery,
+      pagination
     }
   },
 });
