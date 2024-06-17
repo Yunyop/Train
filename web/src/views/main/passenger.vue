@@ -1,46 +1,8 @@
-<script>
-import {defineComponent, reactive, ref} from "vue";
-import axios from "axios";
-import {notification} from "ant-design-vue";
-export default defineComponent({
-  setup(){
-    const visible=ref(false);
-    const passenger=reactive({
-      id: undefined,
-      memberId: undefined,
-      name: undefined,
-      idCard: undefined,
-      type: undefined,
-      createTime: undefined,
-      updateTime: undefined,
-    });
-    const showModal=()=>{
-      visible.value=true;
-    };
-    const handleOk=()=>{
-      axios.post("member/passenger/save",passenger).then((response)=>{
-        let data=response.data;
-        if(data.success){
-          notification.success({ description:"保存成功！"});
-          visible.value=false;
-        }else {
-          notification.error({ description: data.message });
-        }
-      });
-    }
-
-    return{
-      passenger,
-      visible,
-      showModal,
-      handleOk,
-    }
-  },
-});
-</script>
-
 <template>
-  <a-button type="primary" @click="showModal">新增</a-button>
+  <p>
+    <a-button type="primary" @click="showModal">新增</a-button>
+  </p>
+  <a-table :dataSource="dataSource" :columns="columns" />
   <a-modal v-model:visible="visible" title="乘车人" @ok="handleOk"
            ok-text="确认" cancel-text="取消">
     <a-form
@@ -64,6 +26,85 @@ export default defineComponent({
     </a-form>
   </a-modal>
 </template>
+
+<script>
+import {defineComponent, reactive, ref} from "vue";
+import axios from "axios";
+import {notification} from "ant-design-vue";
+export default defineComponent({
+  setup(){
+    const visible=ref(false);
+
+    const passenger=reactive({
+      id: undefined,
+      memberId: undefined,
+      name: undefined,
+      idCard: undefined,
+      type: undefined,
+      createTime: undefined,
+      updateTime: undefined,
+    });
+
+    const showModal=()=>{
+      visible.value=true;
+    };
+
+    const handleOk=()=>{
+      axios.post("member/passenger/save",passenger).then((response)=>{
+        let data=response.data;
+        if(data.success){
+          notification.success({ description:"保存成功！"});
+          visible.value=false;
+        }else {
+          notification.error({ description: data.message });
+        }
+      });
+    };
+
+    const dataSource = [
+      {
+        key: '1',
+        name: '胡彦斌',
+        age: 32,
+        address: '西湖区湖底公园1号',
+      },
+      {
+        key: '2',
+        name: '胡彦祖',
+        age: 42,
+        address: '西湖区湖底公园1号',
+      },
+    ];
+
+    const columns=[
+      {
+        title: '姓名',
+        dataIndex: 'name',
+        key: 'name',
+      },
+      {
+        title: '年龄',
+        dataIndex: 'age',
+        key: 'age',
+      },
+      {
+        title: '住址',
+        dataIndex: 'address',
+        key: 'address',
+      }];
+
+
+    return{
+      passenger,
+      visible,
+      showModal,
+      handleOk,
+      dataSource,
+      columns,
+    }
+  },
+});
+</script>
 
 <style scoped>
 
