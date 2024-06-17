@@ -1,6 +1,9 @@
 <template>
   <p>
-    <a-button type="primary" @click="showModal">新增</a-button>
+    <a-space>
+      <a-button type="primary" @click="handleQuery()">刷新</a-button>
+      <a-button type="primary" @click="showModal">新增</a-button>
+    </a-space>
   </p>
   <a-table
       :dataSource="passengers"
@@ -92,6 +95,12 @@ export default defineComponent({
         key: 'type',
       }];
     const handleQuery=(param)=>{
+      if (!param){
+        param = {
+          page:1,
+          size:pagination.pageSize,
+        };
+      }
       axios.get("member/passenger/query-list", {
         params:{
           page:param.page,
@@ -109,6 +118,7 @@ export default defineComponent({
         }
       });
     };
+
     const handleTableChange=(pagination)=>{
       console.log("查看分页参数"+pagination);
       handleQuery({
