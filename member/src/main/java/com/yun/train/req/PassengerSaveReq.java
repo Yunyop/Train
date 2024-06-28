@@ -13,7 +13,7 @@ public class PassengerSaveReq {
     @NotBlank(message = "[身份证]不能为空")
     private String idCard;
 
-    @NotBlank(message = "[手机号]不能为空")
+    @NotBlank(message = "[旅客类型]不能为空")
     private String type;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")

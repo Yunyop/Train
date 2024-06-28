@@ -32,7 +32,7 @@ public class PassengerService {
     public void save(PassengerSaveReq req){
         DateTime now = DateTime.now();
         Passenger passenger = BeanUtil.copyProperties(req, Passenger.class);
-        if (ObjectUtil.isNull(passenger)) {
+        if (ObjectUtil.isNull(passenger.getId())) {
             passenger.setMemberId(LoginMemberContext.getId());
             passenger.setId(SnowUtil.getSnowflakeNextId());
             passenger.setCreateTime(now);
@@ -40,7 +40,7 @@ public class PassengerService {
             passengerMapper.insert(passenger);
         }else {
             passenger.setUpdateTime(now);
-            passengerMapper.updateByPrimaryKey(passenger);
+            passengerMapper.updateByPrimaryKeySelective(passenger);
         }
     }
     public PageResp<PassengerQueryResp> queryList(PassengerQueryReq req){
