@@ -24,6 +24,12 @@
           </a-popconfirm>
         </a-space>
       </template>
+      <template v-else-if="column.dataIndex==='type'">
+        <span v-for="item in PASSENGER_TYPE_ARRAY" :key="item.key">
+          <span v-if="item.key===record.type">{{item.value}}
+          </span>
+        </span>
+      </template>
     </template>
   </a-table>
   <a-modal v-model:visible="visible" title="乘车人" @ok="handleOk"
@@ -56,7 +62,7 @@ import axios from "axios";
 export default defineComponent({
   name: "passenger-view",
   setup() {
-    const PASSENGER_TYPE_ARRAY = [{key:"1",value:"ad"},{key:"2",value:"ad"},{key:"3",value:"ad"},]
+    const PASSENGER_TYPE_ARRAY = [{key:"1",value:"成人"},{key:"2",value:"儿童"},{key:"3",value:"学生"},]
     const visible = ref(false);
     let passenger = ref({
       id: undefined,
