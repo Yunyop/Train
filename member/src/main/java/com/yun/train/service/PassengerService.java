@@ -29,7 +29,7 @@ public class PassengerService {
 
     @Resource
     private PassengerMapper passengerMapper;
-    public void save(PassengerSaveReq req){
+    public void save(PassengerSaveReq req) {
         DateTime now = DateTime.now();
         Passenger passenger = BeanUtil.copyProperties(req, Passenger.class);
         if (ObjectUtil.isNull(passenger.getId())) {
@@ -38,9 +38,9 @@ public class PassengerService {
             passenger.setCreateTime(now);
             passenger.setUpdateTime(now);
             passengerMapper.insert(passenger);
-        }else {
+        } else {
             passenger.setUpdateTime(now);
-            passengerMapper.updateByPrimaryKeySelective(passenger);
+            passengerMapper.updateByPrimaryKey(passenger);
         }
     }
     public PageResp<PassengerQueryResp> queryList(PassengerQueryReq req){

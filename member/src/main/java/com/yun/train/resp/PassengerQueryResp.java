@@ -22,6 +22,7 @@ public class PassengerQueryResp {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long memberId;
 
     public Long getId() {
