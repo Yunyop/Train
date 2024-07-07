@@ -1,20 +1,22 @@
 package com.yun.train.server;
 
 import com.yun.train.util.FreemarkerUtil;
+import freemarker.template.TemplateException;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ServerGenerator {
-    static String servicePath ="member/src/main/java/com/yun/train/service/";
+    static String serverPath ="member/src/main/java/com/yun/train/";
     static String pomPath="generator/pom.xml";
     static {
-        new File(servicePath).mkdir();
+        new File(serverPath).mkdir();
     }
     public static void main(String[] args) throws Exception{
 //        读取xml获取mybatis-generator
@@ -24,8 +26,8 @@ public class ServerGenerator {
         String module = generatorPath.replace("[module]/src/main/resources/generator-config-","").replace(".xml","");
         System.out.println("module:"+module);
 
-        servicePath=servicePath.replace("[module]",module);
-        System.out.println("servicePath:"+servicePath);
+        serverPath=serverPath.replace("[module]",module);
+        System.out.println("servicePath:"+serverPath);
 
 
 //        读xml里面的节点table
@@ -55,8 +57,19 @@ public class ServerGenerator {
 //        List<Field> fieldList = DbUtil.getColumnByTableName(tableName.getText());
 //        Set<String> typeSet = getJavaTypes(fieldList);
 
-        FreemarkerUtil.initConfig("service.ftl");
-        FreemarkerUtil.generator(servicePath+Domain+"Service.java",param);
+        genModule(Domain, param,"service");
+
+        genModule(Domain, param,"controller");
+    }
+
+    private static void genModule(String Domain, Map<String, Object> param,String target) throws IOException, TemplateException {
+        FreemarkerUtil.initConfig(target+".ftl");
+        String toPath = serverPath+target+"/";
+        new File(serverPath).mkdir();
+        String Target = target.substring(0,1).toUpperCase()+target.substring(1);
+        String fileName = toPath + Domain + Target + ".java";
+        System.out.println("开始生成："+fileName);
+        FreemarkerUtil.generator(fileName, param);
     }
 
     private static String getGeneratorPath() throws DocumentException {
