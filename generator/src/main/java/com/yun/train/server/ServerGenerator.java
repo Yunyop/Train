@@ -1,5 +1,7 @@
 package com.yun.train.server;
 
+import com.yun.train.util.DbUtil;
+import com.yun.train.util.Field;
 import com.yun.train.util.FreemarkerUtil;
 import freemarker.template.TemplateException;
 import org.dom4j.Document;
@@ -10,6 +12,7 @@ import org.dom4j.io.SAXReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ServerGenerator {
@@ -39,6 +42,18 @@ public class ServerGenerator {
         Node domainObjectName = table.selectSingleNode("@domainObjectName");
         System.out.println(tableName.getText()+"/"+domainObjectName.getText());
 
+//        为DbUtil设置数据源
+
+        Node connectionURL = document.selectSingleNode("//@connectionURL");
+        Node userId = document.selectSingleNode("//@userId");
+        Node password = document.selectSingleNode("//@password");
+        System.out.println("connectionURL:"+connectionURL.getText()+"/"+userId.getText()+"/"+password.getText());
+
+//        为DbUtil赋值
+        DbUtil.url=connectionURL.getText();
+        DbUtil.user=userId.getText();
+        DbUtil.password=password.getText();
+
         // 示例：表名 Yunyop_test
         // Domain = YunyopTest
         String Domain = domainObjectName.getText();
@@ -53,8 +68,9 @@ public class ServerGenerator {
         param.put("do_main",do_main);
         System.out.println("组装参数："+param);
         // 表中文名
-//        String tableNameCn = DbUtil.getTableComment(tableName.getText());
-//        List<Field> fieldList = DbUtil.getColumnByTableName(tableName.getText());
+        String tableNameCn = DbUtil.getTableComment(tableName.getText());
+        List<Field> fieldList = DbUtil.getColumnByTableName(tableName.getText());
+
 //        Set<String> typeSet = getJavaTypes(fieldList);
 
         genModule(Domain, param,"service");
