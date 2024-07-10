@@ -75,9 +75,15 @@ public class ServerGenerator {
         param.put("fieldList",fieldList);
         System.out.println("组装参数："+param);
 
-        genModule(Domain, param,"service","service");
-        genModule(Domain, param,"controller","controller");
-        genModule(Domain, param,"req","saveReq");
+//        genModule(Domain, param,"service","service");
+//
+//        genModule(Domain, param,"controller","controller");
+//
+//        genModule(Domain, param,"req","saveReq");
+
+        genModule(Domain, param,"req","queryReq");
+        genModule(Domain, param,"resp","queryResp");
+
 
 
     }
