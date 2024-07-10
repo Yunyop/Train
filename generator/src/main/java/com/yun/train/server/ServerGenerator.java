@@ -11,9 +11,7 @@ import org.dom4j.io.SAXReader;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ServerGenerator {
     static String serverPath ="member/src/main/java/com/yun/train/";
@@ -61,26 +59,32 @@ public class ServerGenerator {
         String domain = Domain.substring(0, 1).toLowerCase() + Domain.substring(1);
         // do_main = yunyop-test
         String do_main = tableName.getText().replaceAll("_", "-");
-//        组装参数
+
+        // 表中文名
+        String tableNameCn = DbUtil.getTableComment(tableName.getText());
+        List<Field> fieldList = DbUtil.getColumnByTableName(tableName.getText());
+        Set<String> typeSet = getJavaTypes(fieldList);
+
+        //        组装参数
         Map<String,Object> param = new HashMap<>();
         param.put("Domain",Domain);
         param.put("domain",domain);
         param.put("do_main",do_main);
+        param.put("tableName",tableNameCn);
+        param.put("typeSet",typeSet);
+        param.put("fieldList",fieldList);
         System.out.println("组装参数："+param);
-        // 表中文名
-        String tableNameCn = DbUtil.getTableComment(tableName.getText());
-        List<Field> fieldList = DbUtil.getColumnByTableName(tableName.getText());
 
-//        Set<String> typeSet = getJavaTypes(fieldList);
+        genModule(Domain, param,"service","service");
+        genModule(Domain, param,"controller","controller");
+        genModule(Domain, param,"req","saveReq");
 
-        genModule(Domain, param,"service");
 
-        genModule(Domain, param,"controller");
     }
 
-    private static void genModule(String Domain, Map<String, Object> param,String target) throws IOException, TemplateException {
+    private static void genModule(String Domain, Map<String, Object> param,String packageName,String target) throws IOException, TemplateException {
         FreemarkerUtil.initConfig(target+".ftl");
-        String toPath = serverPath+target+"/";
+        String toPath = serverPath+packageName+"/";
         new File(serverPath).mkdir();
         String Target = target.substring(0,1).toUpperCase()+target.substring(1);
         String fileName = toPath + Domain + Target + ".java";
@@ -97,5 +101,15 @@ public class ServerGenerator {
         Node node = document.selectSingleNode("//pom:configurationFile");
         System.out.println(node.getText());
         return node.getText();
+    }
+//    获取所以的java类型，使用Set去重
+
+    private static Set<String> getJavaTypes(List<Field> fieldList) {
+        Set<String> set = new HashSet<>();
+        for (int i = 0; i < fieldList.size(); i++) {
+            Field field = fieldList.get(i);
+            set.add(field.getJavaType());
+        }
+        return set;
     }
 }
