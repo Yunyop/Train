@@ -14,7 +14,14 @@ import java.io.IOException;
 import java.util.*;
 
 public class ServerGenerator {
-    static String serverPath ="member/src/main/java/com/yun/train/";
+
+//    按模块生成前端代码
+    static boolean readOnly = false;
+
+    static String vuePath="web/src/views/main/";
+//    按模块生成后端代码
+    static String serverPath ="[module]/src/main/java/com/yun/train/";
+
     static String pomPath="generator/pom.xml";
     static {
         new File(serverPath).mkdir();
@@ -24,7 +31,7 @@ public class ServerGenerator {
         String generatorPath = getGeneratorPath();
 
 //        比如generatoe-config-member.xml,得到module=member
-        String module = generatorPath.replace("[module]/src/main/resources/generator-config-","").replace(".xml","");
+        String module = generatorPath.replace("src/main/resources/generator-config-","").replace(".xml","");
         System.out.println("module:"+module);
 
         serverPath=serverPath.replace("[module]",module);
@@ -67,12 +74,14 @@ public class ServerGenerator {
 
         //        组装参数
         Map<String,Object> param = new HashMap<>();
+        param.put("module",module);
         param.put("Domain",Domain);
         param.put("domain",domain);
         param.put("do_main",do_main);
-        param.put("tableName",tableNameCn);
+        param.put("tableNameCn",tableNameCn);
         param.put("typeSet",typeSet);
         param.put("fieldList",fieldList);
+        param.put("readOnly",readOnly);
         System.out.println("组装参数："+param);
 
 //        genModule(Domain, param,"service","service");
@@ -81,9 +90,11 @@ public class ServerGenerator {
 //
 //        genModule(Domain, param,"req","saveReq");
 
-        genModule(Domain, param,"req","queryReq");
-        genModule(Domain, param,"resp","queryResp");
+//        genModule(Domain, param,"req","queryReq");
 
+//        genModule(Domain, param,"resp","queryResp");
+
+        genModuleVue(do_main,param);
 
 
     }
@@ -91,9 +102,16 @@ public class ServerGenerator {
     private static void genModule(String Domain, Map<String, Object> param,String packageName,String target) throws IOException, TemplateException {
         FreemarkerUtil.initConfig(target+".ftl");
         String toPath = serverPath+packageName+"/";
-        new File(serverPath).mkdir();
+        new File(serverPath).mkdirs();
         String Target = target.substring(0,1).toUpperCase()+target.substring(1);
         String fileName = toPath + Domain + Target + ".java";
+        System.out.println("开始生成："+fileName);
+        FreemarkerUtil.generator(fileName, param);
+    }
+    private static void genModuleVue(String do_main,Map<String, Object> param) throws IOException, TemplateException {
+        FreemarkerUtil.initConfig("vue.ftl");
+        new File(vuePath).mkdirs();
+        String fileName =vuePath + do_main + ".vue";
         System.out.println("开始生成："+fileName);
         FreemarkerUtil.generator(fileName, param);
     }
