@@ -1,4 +1,4 @@
-package com.yun.train.server;
+package com.yun.train.genMoudle;
 
 import com.yun.train.util.DbUtil;
 import com.yun.train.util.Field;
