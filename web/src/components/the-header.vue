@@ -1,6 +1,9 @@
 <template>
   <a-layout-header class="header">
     <div class="logo" />
+    <router-link to="/welcome" style="color: white">
+    Yun12306
+    </router-link>
     <div style="float: right;color: white" >
       您好:{{member.mobile}}&nbsp;&nbsp;
       <router-link to="/login" style="color: white">

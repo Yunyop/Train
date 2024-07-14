@@ -1,6 +1,10 @@
 <template>
   <a-layout-header class="header">
-    <div class="logo" />
+    <div class="logo" >
+    <router-link to="/welcome" style="color: white;font-size: 18px" >
+      Yun控台
+    </router-link>
+    </div>
     <div style="float: right;color: white" >
       欢迎使用管理控台
     </div>
@@ -50,10 +54,10 @@ export default defineComponent({
 <style scoped>
 .logo {
   float: left;
-  width: 120px;
+  width: 150px;
   height: 31px;
-  margin: 16px 24px 16px 0;
-  background: rgba(255, 255, 255, 0.3);
+  color: white;
+  font-size: 20px;
 }
 
 </style>
