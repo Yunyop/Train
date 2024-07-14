@@ -31,9 +31,9 @@ export default defineComponent({
         </router-link>
 
       </a-menu-item>
-      <a-menu-item key="/passenger">
-        <router-link to="/passenger">
-          <user-outlined/>&nbsp;乘车人管理
+      <a-menu-item key="/about">
+        <router-link to="/about">
+          <user-outlined/>&nbsp;关于
         </router-link>
       </a-menu-item>
     </a-menu>
