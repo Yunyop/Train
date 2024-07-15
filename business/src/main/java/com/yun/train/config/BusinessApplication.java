@@ -13,13 +13,12 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @ComponentScan("com.yun")
 @MapperScan("com.yun.train.mapper")
 @EnableWebMvc
+public class BusinessApplication {
 
-public class MemberApplication {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(MemberApplication.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(BusinessApplication.class);
 
 	public static void main(String[] args) {
-		SpringApplication app = new SpringApplication(MemberApplication.class);
+		SpringApplication app = new SpringApplication(BusinessApplication.class);
 		try {
 			Environment env = app.run(args).getEnvironment();
 			LOGGER.info("启动成功");
