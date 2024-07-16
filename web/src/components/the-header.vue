@@ -1,9 +1,10 @@
 <template>
   <a-layout-header class="header">
-    <div class="logo" />
-    <router-link to="/welcome" style="color: white">
-    Yun12306
-    </router-link>
+    <div class="logo" >
+      <router-link to="/welcome" style="color: white;font-size: 18px" >
+        Yun12306
+      </router-link>
+    </div>
     <div style="float: right;color: white" >
       您好:{{member.mobile}}&nbsp;&nbsp;
       <router-link to="/login" style="color: white">
@@ -59,10 +60,10 @@ export default defineComponent({
 <style scoped>
 .logo {
   float: left;
-  width: 120px;
+  width: 150px;
   height: 31px;
-  margin: 16px 24px 16px 0;
-  background: rgba(255, 255, 255, 0.3);
+  color: white;
+  font-size: 20px;
 }
 
 </style>
