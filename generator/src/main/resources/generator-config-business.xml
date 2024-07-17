@@ -41,7 +41,9 @@
                              targetPackage="com.yun.train.mapper"
                              type="XMLMAPPER"/>
 
-        <table tableName="station" domainObjectName="Station"/>
+<!--        <table tableName="station" domainObjectName="Station"/>-->
+        <table tableName="train" domainObjectName="Train"/>
+
 <!--        <table tableName="passenger" domainObjectName="Passenger"/>-->
 <!--        <table tableName="ticket" domainObjectName="Ticket"/>-->
     </context>

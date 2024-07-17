@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yun.train.mapper.PassengerMapper">
-  <resultMap id="BaseResultMap" type="com.yun.train.domain.Passenger">
+<mapper namespace="com.yun.train.mapper.TrainMapper">
+  <resultMap id="BaseResultMap" type="com.yun.train.domain.Train">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="id_card" jdbcType="VARCHAR" property="idCard" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="type" jdbcType="CHAR" property="type" />
+    <result column="start" jdbcType="VARCHAR" property="start" />
+    <result column="start_pinyin" jdbcType="VARCHAR" property="startPinyin" />
+    <result column="start_time" jdbcType="TIME" property="startTime" />
+    <result column="end" jdbcType="VARCHAR" property="end" />
+    <result column="end_pinyin" jdbcType="VARCHAR" property="endPinyin" />
+    <result column="end_time" jdbcType="TIME" property="endTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="member_id" jdbcType="BIGINT" property="memberId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,15 +73,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, id_card, `type`, create_time, update_time, member_id
+    id, code, `type`, `start`, start_pinyin, start_time, `end`, end_pinyin, end_time, 
+    create_time, update_time
   </sql>
-  <select id="selectByExample" parameterType="com.yun.train.domain.PassengerExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.yun.train.domain.TrainExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from passenger
+    from train
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -88,41 +93,58 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from passenger
+    from train
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from passenger
+    delete from train
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.yun.train.domain.PassengerExample">
-    delete from passenger
+  <delete id="deleteByExample" parameterType="com.yun.train.domain.TrainExample">
+    delete from train
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.yun.train.domain.Passenger">
-    insert into passenger (id, `name`, id_card, 
-      `type`, create_time, update_time, 
-      member_id)
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, 
-      #{type,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{memberId,jdbcType=BIGINT})
+  <insert id="insert" parameterType="com.yun.train.domain.Train">
+    insert into train (id, code, `type`, `start`, 
+      start_pinyin, start_time, `end`, 
+      end_pinyin, end_time, create_time, 
+      update_time)
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, #{start,jdbcType=VARCHAR}, 
+      #{startPinyin,jdbcType=VARCHAR}, #{startTime,jdbcType=TIME}, #{end,jdbcType=VARCHAR}, 
+      #{endPinyin,jdbcType=VARCHAR}, #{endTime,jdbcType=TIME}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.yun.train.domain.Passenger">
-    insert into passenger
+  <insert id="insertSelective" parameterType="com.yun.train.domain.Train">
+    insert into train
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="name != null">
-        `name`,
+      <if test="code != null">
+        code,
       </if>
-      <if test="idCard != null">
-        id_card,
-      </if>
-      <if test="type!= null">
+      <if test="type != null">
         `type`,
+      </if>
+      <if test="start != null">
+        `start`,
+      </if>
+      <if test="startPinyin != null">
+        start_pinyin,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="end != null">
+        `end`,
+      </if>
+      <if test="endPinyin != null">
+        end_pinyin,
+      </if>
+      <if test="endTime != null">
+        end_time,
       </if>
       <if test="createTime != null">
         create_time,
@@ -130,22 +152,34 @@
       <if test="updateTime != null">
         update_time,
       </if>
-      <if test="memberId != null">
-        member_id,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
       </if>
-      <if test="idCard != null">
-        #{idCard,jdbcType=VARCHAR},
-      </if>
-      <if test="type!= null">
+      <if test="type != null">
         #{type,jdbcType=CHAR},
+      </if>
+      <if test="start != null">
+        #{start,jdbcType=VARCHAR},
+      </if>
+      <if test="startPinyin != null">
+        #{startPinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIME},
+      </if>
+      <if test="end != null">
+        #{end,jdbcType=VARCHAR},
+      </if>
+      <if test="endPinyin != null">
+        #{endPinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIME},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -153,31 +187,43 @@
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="memberId != null">
-        #{memberId,jdbcType=BIGINT},
-      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.yun.train.domain.PassengerExample" resultType="java.lang.Long">
-    select count(*) from passenger
+  <select id="countByExample" parameterType="com.yun.train.domain.TrainExample" resultType="java.lang.Long">
+    select count(*) from train
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update passenger
+    update train
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.name != null">
-        `name` = #{record.name,jdbcType=VARCHAR},
+      <if test="record.code != null">
+        code = #{record.code,jdbcType=VARCHAR},
       </if>
-      <if test="record.idCard != null">
-        id_card = #{record.idCard,jdbcType=VARCHAR},
-      </if>
-      <if test="record.type!= null">
+      <if test="record.type != null">
         `type` = #{record.type,jdbcType=CHAR},
+      </if>
+      <if test="record.start != null">
+        `start` = #{record.start,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startPinyin != null">
+        start_pinyin = #{record.startPinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startTime != null">
+        start_time = #{record.startTime,jdbcType=TIME},
+      </if>
+      <if test="record.end != null">
+        `end` = #{record.end,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endPinyin != null">
+        end_pinyin = #{record.endPinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endTime != null">
+        end_time = #{record.endTime,jdbcType=TIME},
       </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -185,38 +231,54 @@
       <if test="record.updateTime != null">
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.memberId != null">
-        member_id = #{record.memberId,jdbcType=BIGINT},
-      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update passenger
+    update train
     set id = #{record.id,jdbcType=BIGINT},
-      `name` = #{record.name,jdbcType=VARCHAR},
-      id_card = #{record.idCard,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=VARCHAR},
       `type` = #{record.type,jdbcType=CHAR},
+      `start` = #{record.start,jdbcType=VARCHAR},
+      start_pinyin = #{record.startPinyin,jdbcType=VARCHAR},
+      start_time = #{record.startTime,jdbcType=TIME},
+      `end` = #{record.end,jdbcType=VARCHAR},
+      end_pinyin = #{record.endPinyin,jdbcType=VARCHAR},
+      end_time = #{record.endTime,jdbcType=TIME},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      member_id = #{record.memberId,jdbcType=BIGINT}
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yun.train.domain.Passenger">
-    update passenger
+  <update id="updateByPrimaryKeySelective" parameterType="com.yun.train.domain.Train">
+    update train
     <set>
-      <if test="name != null">
-        `name` = #{name,jdbcType=VARCHAR},
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
       </if>
-      <if test="idCard != null">
-        id_card = #{idCard,jdbcType=VARCHAR},
-      </if>
-      <if test="type!= null">
+      <if test="type != null">
         `type` = #{type,jdbcType=CHAR},
+      </if>
+      <if test="start != null">
+        `start` = #{start,jdbcType=VARCHAR},
+      </if>
+      <if test="startPinyin != null">
+        start_pinyin = #{startPinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIME},
+      </if>
+      <if test="end != null">
+        `end` = #{end,jdbcType=VARCHAR},
+      </if>
+      <if test="endPinyin != null">
+        end_pinyin = #{endPinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIME},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -224,20 +286,21 @@
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="memberId != null">
-        member_id = #{memberId,jdbcType=BIGINT},
-      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.yun.train.domain.Passenger">
-    update passenger
-    set `name` = #{name,jdbcType=VARCHAR},
-      id_card = #{idCard,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.yun.train.domain.Train">
+    update train
+    set code = #{code,jdbcType=VARCHAR},
       `type` = #{type,jdbcType=CHAR},
+      `start` = #{start,jdbcType=VARCHAR},
+      start_pinyin = #{startPinyin,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIME},
+      `end` = #{end,jdbcType=VARCHAR},
+      end_pinyin = #{endPinyin,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=TIME},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      member_id = #{memberId,jdbcType=BIGINT}
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
