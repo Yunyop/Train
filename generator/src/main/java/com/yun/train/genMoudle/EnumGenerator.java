@@ -1,6 +1,8 @@
 package com.yun.train.genMoudle;
 
 import cn.hutool.core.util.StrUtil;
+import com.yun.train.enums.PassengerTypeEnum;
+import com.yun.train.enums.SeatTypeEnum;
 import com.yun.train.enums.TrainTypeEnum;
 
 import java.io.FileOutputStream;
@@ -23,8 +25,9 @@ public class EnumGenerator {
         StringBuffer bufferArray = new StringBuffer();
         long begin = System.currentTimeMillis();
         try {
-//            toJson(PassengerTypeEnum.class, bufferObject, bufferArray);
+            toJson(PassengerTypeEnum.class, bufferObject, bufferArray);
             toJson(TrainTypeEnum.class, bufferObject, bufferArray);
+            toJson(SeatTypeEnum.class, bufferObject, bufferArray);
 
 
             StringBuffer buffer = bufferObject.append("\r\n").append(bufferArray);
