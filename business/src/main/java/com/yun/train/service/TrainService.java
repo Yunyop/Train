@@ -41,6 +41,9 @@ public class TrainService {
             trainMapper.updateByPrimaryKey(train);
         }
     }
+
+//    分页列表查询
+    
     public PageResp<TrainQueryResp> queryList(TrainQueryReq req){
         TrainExample trainExample = new TrainExample();
         trainExample.setOrderByClause("id desc");
@@ -66,5 +69,11 @@ public class TrainService {
     }
     public void delete(long id) {
         trainMapper.deleteByPrimaryKey(id);
+    }
+    public List<TrainQueryResp> queryAll(){
+        TrainExample trainExample = new TrainExample();
+        trainExample.setOrderByClause("id desc");
+        List<Train> trainList = trainMapper.selectByExample(trainExample);
+        return BeanUtil.copyToList(trainList, TrainQueryResp.class);
     }
 }

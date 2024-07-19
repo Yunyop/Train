@@ -1,6 +1,5 @@
 package com.yun.train.controller.admin;
 
-import com.yun.train.context.LoginMemberContext;
 import com.yun.train.req.TrainQueryReq;
 import com.yun.train.req.TrainSaveReq;
 import com.yun.train.resp.CommonResp;
@@ -10,6 +9,8 @@ import com.yun.train.service.TrainService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/train")
@@ -32,6 +33,11 @@ public class TrainAdminController {
     public CommonResp<Object> delete(@PathVariable long id) {
         trainService.delete(id);
         return new CommonResp<>();
+    }
+    @GetMapping("/query-all")
+    public CommonResp<List<TrainQueryResp>> queryList() {
+        List<TrainQueryResp> list = trainService.queryAll();
+        return new CommonResp<>(list);
     }
 
 }
