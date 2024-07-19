@@ -70,3 +70,19 @@ create table train_station
     constraint train_code_name_unique
         unique (train_code, name)
 )engine =innodb default charset = utf8mb4 comment ='火车车站';
+
+
+CREATE TABLE `train_seat` (
+                              id BIGINT NOT NULL COMMENT 'id',
+                              train_code VARCHAR(20) NOT NULL COMMENT '车次编号',
+                              carriage_index INT NOT NULL COMMENT '箱序',
+                              `row` CHAR(2) NOT NULL COMMENT '排号|01,02',
+                              col CHAR(1) NOT NULL COMMENT '列号|枚举[SeatColEnum]',
+                              seat_type CHAR(1) NOT NULL COMMENT '座位类型|枚举[SeatTypeEnum]',
+                              carriage_seat_index INT NOT NULL COMMENT '同车厢座序',
+                              create_time DATETIME(3) NULL COMMENT '新增时间',
+                              update_time DATETIME(3) NULL COMMENT '修改时间',
+                              CONSTRAINT train_seat_pk PRIMARY KEY (id)
+) COMMENT '座位'
+    ENGINE = InnoDB
+    CHARSET = utf8mb4;
