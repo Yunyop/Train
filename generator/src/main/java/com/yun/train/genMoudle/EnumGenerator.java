@@ -2,6 +2,7 @@ package com.yun.train.genMoudle;
 
 import cn.hutool.core.util.StrUtil;
 import com.yun.train.enums.PassengerTypeEnum;
+import com.yun.train.enums.SeatColEnum;
 import com.yun.train.enums.SeatTypeEnum;
 import com.yun.train.enums.TrainTypeEnum;
 
@@ -28,6 +29,7 @@ public class EnumGenerator {
             toJson(PassengerTypeEnum.class, bufferObject, bufferArray);
             toJson(TrainTypeEnum.class, bufferObject, bufferArray);
             toJson(SeatTypeEnum.class, bufferObject, bufferArray);
+            toJson(SeatColEnum.class, bufferObject, bufferArray);
 
 
             StringBuffer buffer = bufferObject.append("\r\n").append(bufferArray);

@@ -55,6 +55,11 @@ export default defineComponent({
           <user-outlined/>&nbsp;火车车厢
         </router-link>
       </a-menu-item>
+      <a-menu-item key="/train-seat">
+        <router-link to="/train-seat">
+          <user-outlined/>&nbsp;火车座位
+        </router-link>
+      </a-menu-item>
     </a-menu>
   </a-layout-sider>
 </template>
