@@ -2,6 +2,7 @@
   <a-select v-model:value="trainCode" show-search allowClear
             :filter-option="filterTrainCodeOption"
             @change="onChange" placeholder="请选择车次"
+            :style="'width:'+_width"
   >
     <a-select-option v-for="item in trains" :key="item.code" :value="item.code" :lable="item.code+item.start+item.end">
       {{item.code}}|{{item.start}}~{{item.end}}
@@ -16,11 +17,15 @@ import axios from "axios";
 
 export default defineComponent({
   name:"train-select-view",
-  props:["modelValue"],
+  props:["modelValue","width"],
   emits:['update:modelValue','change'],
-  setup(props,{emits}){
+  setup(props, { emit }) {
     const trainCode = ref();
     const trains = ref([]);
+    const _width=ref(props.width);
+    if (Tool.isEmpty(props.width)){
+      _width.value="100%";
+    }
     // 利用watch，动态获取父组件的值，如果在onMOunted或其他方法里，则只有第一次生效
     watch(()=>props.modelValue,()=>{
       console.log("props.modelValue",props.modelValue);
@@ -45,12 +50,12 @@ export default defineComponent({
       return option.lable.toLowerCase().indexOf(input.toLowerCase())>=0;
     };
     const onChange=(value)=>{
-      emits("update:modelValue",value);
+      emit("update:modelValue",value);
       let train=trains.value.filter(item=>item.code===value)[0];
       if (Tool.isEmpty(train)){
         train={};
       }
-      emits('change',train);
+      emit('change',train);
     };
     onMounted(()=>{
       queryAllTrain();
@@ -61,6 +66,7 @@ export default defineComponent({
       trainCode,
       filterTrainCodeOption,
       onChange,
+      _width,
     }
   }
 })

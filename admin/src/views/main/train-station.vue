@@ -28,7 +28,7 @@
            ok-text="确认" cancel-text="取消">
     <a-form :model="trainStation" :label-col="{span: 4}" :wrapper-col="{ span: 20 }">
       <a-form-item label="车次编号">
-        <TrainSelectView v-model="trainStation.trainCode"></TrainSelectView>
+        <TrainSelectView v-model="trainStation.trainCode" ></TrainSelectView>
       </a-form-item>
       <a-form-item label="站序">
         <a-input v-model:value="trainStation.index" />
@@ -220,37 +220,12 @@ export default defineComponent({
       });
     };
 
-    // 车次下拉框
-    const trains=ref([])
-
-    // 查询所有的车次，用于车次下拉框
-    const queryTrainCode = () => {
-      axios.get("/business/admin/train/query-all").then((response)=>{
-        let data=response.data;
-        if (data.success){
-          trains.value=data.content;
-        }else {
-          notification.error({description:data.message})
-        }
-      });
-    };
-
-
-    // 下拉框筛选
-
-    const filterTrainCodeOption = (input,option) => {
-      console.log(input,option);
-      return option.lable.toLowerCase().indexOf(input.toLowerCase())>=0;
-    };
-
-
     onMounted(() => {
       handleQuery({
         page: 1,
         size: pagination.value.pageSize
       });
 
-      queryTrainCode();
     });
 
     return {
@@ -266,8 +241,6 @@ export default defineComponent({
       handleOk,
       onEdit,
       onDelete,
-      trains,
-      filterTrainCodeOption
     };
   },
 });
