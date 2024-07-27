@@ -34,6 +34,7 @@ public class TrainAdminController {
         trainService.delete(id);
         return new CommonResp<>();
     }
+//    查询所有车站
     @GetMapping("/query-all")
     public CommonResp<List<TrainQueryResp>> queryList() {
         List<TrainQueryResp> list = trainService.queryAll();

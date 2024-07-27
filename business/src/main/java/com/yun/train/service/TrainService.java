@@ -71,6 +71,7 @@ public class TrainService {
         trainMapper.deleteByPrimaryKey(id);
     }
 
+    //查询所有车站
     public List<TrainQueryResp> queryAll(){
         TrainExample trainExample = new TrainExample();
         trainExample.setOrderByClause("code asc");

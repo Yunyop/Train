@@ -67,4 +67,11 @@ public class StationService {
     public void delete(long id) {
         stationMapper.deleteByPrimaryKey(id);
     }
+    //查询所有车站
+    public List<StationQueryResp> queryAll(){
+        StationExample stationExample = new StationExample();
+        stationExample.setOrderByClause("name_pinyin asc");
+        List<Station> stationList = stationMapper.selectByExample(stationExample);
+        return BeanUtil.copyToList(stationList, StationQueryResp.class);
+    }
 }
