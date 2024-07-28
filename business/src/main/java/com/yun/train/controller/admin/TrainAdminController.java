@@ -5,6 +5,7 @@ import com.yun.train.req.TrainSaveReq;
 import com.yun.train.resp.CommonResp;
 import com.yun.train.resp.PageResp;
 import com.yun.train.resp.TrainQueryResp;
+import com.yun.train.service.TrainSeatService;
 import com.yun.train.service.TrainService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -17,6 +18,9 @@ import java.util.List;
 public class TrainAdminController {
     @Resource
     private TrainService trainService;
+
+    @Resource
+    private TrainSeatService trainSeatService;
 
     @PostMapping("/save")
     public CommonResp<Object> save(@Valid @RequestBody TrainSaveReq req) {
@@ -39,6 +43,12 @@ public class TrainAdminController {
     public CommonResp<List<TrainQueryResp>> queryList() {
         List<TrainQueryResp> list = trainService.queryAll();
         return new CommonResp<>(list);
+    }
+//    生成座位
+    @GetMapping("/gen-seat/{trainCode}")
+    public CommonResp<Object> genSeat(@PathVariable String trainCode) {
+        trainSeatService.genTrainSeat(trainCode);
+        return new CommonResp<>();
     }
 
 }
