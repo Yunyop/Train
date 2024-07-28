@@ -54,7 +54,9 @@ public class TrainSeatService {
         TrainSeatExample trainSeatExample = new TrainSeatExample();
         trainSeatExample.setOrderByClause("train_code asc, carriage_index asc, carriage_seat_index asc");
         TrainSeatExample.Criteria criteria = trainSeatExample.createCriteria();
-
+        if (ObjectUtil.isNotEmpty(req.getTrainCode())){
+            criteria.andTrainCodeEqualTo(req.getTrainCode());
+        }
         LOGGER.info("查询页码：{}",req.getPage());
         LOGGER.info("每页条数：{}",req.getSize());
         PageHelper.startPage(req.getPage(),req.getSize());

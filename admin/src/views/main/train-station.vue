@@ -1,7 +1,8 @@
 <template>
   <p>
     <a-space>
-      <a-button type="primary" @click="handleQuery()">刷新</a-button>
+      <train-select-view v-model="params.trainCode" width="200px"></train-select-view>
+      <a-button type="primary" @click="handleQuery()">查找</a-button>
       <a-button type="primary" @click="onAdd">新增</a-button>
     </a-space>
   </p>
@@ -28,14 +29,14 @@
            ok-text="确认" cancel-text="取消">
     <a-form :model="trainStation" :label-col="{span: 4}" :wrapper-col="{ span: 20 }">
       <a-form-item label="车次编号">
-        <TrainSelectView v-model="trainStation.trainCode" ></TrainSelectView>
+        <train-select-view v-model="trainStation.trainCode"></train-select-view>
       </a-form-item>
       <a-form-item label="站序">
         <a-input v-model:value="trainStation.index" />
+        <span style="color: red">重要：第1站是0，对显示销售图有影响</span>
       </a-form-item>
       <a-form-item label="站名">
         <station-select-view v-model="trainStation.name"></station-select-view>
-
       </a-form-item>
       <a-form-item label="站名拼音">
         <a-input v-model:value="trainStation.namePinyin" disabled/>
@@ -46,10 +47,10 @@
       <a-form-item label="出站时间">
         <a-time-picker v-model:value="trainStation.outTime" valueFormat="HH:mm:ss" placeholder="请选择时间" />
       </a-form-item>
-      <a-form-item label="停留时间">
-        <a-time-picker v-model:value="trainStation.stopTime" valueFormat="HH:mm:ss" placeholder="请选择时间" />
+      <a-form-item label="停站时长">
+        <a-time-picker v-model:value="trainStation.stopTime" valueFormat="HH:mm:ss" placeholder="请选择时间" disabled/>
       </a-form-item>
-      <a-form-item label="里程(公里)">
+      <a-form-item label="里程（公里）">
         <a-input v-model:value="trainStation.km" />
       </a-form-item>
     </a-form>
@@ -61,12 +62,13 @@ import {defineComponent, ref, onMounted, watch} from 'vue';
 import {notification} from "ant-design-vue";
 import axios from "axios";
 import {pinyin} from "pinyin-pro";
-import TrainSelectView  from "@/components/train-select.vue";
-import StationSelectView from "@/components/station-select.vue";
+import TrainSelectView from "@/components/train-select";
+import StationSelectView from "@/components/station-select";
+import dayjs from 'dayjs';
 
 export default defineComponent({
   name: "train-station-view",
-  components:{StationSelectView, TrainSelectView},
+  components: {StationSelectView, TrainSelectView},
   setup() {
     const visible = ref(false);
     let trainStation = ref({
@@ -90,6 +92,9 @@ export default defineComponent({
       pageSize: 10,
     });
     let loading = ref(false);
+    let params = ref({
+      trainCode: null
+    });
     const columns = [
     {
       title: '车次编号',
@@ -122,12 +127,12 @@ export default defineComponent({
       key: 'outTime',
     },
     {
-      title: '停留时间',
+      title: '停站时长',
       dataIndex: 'stopTime',
       key: 'stopTime',
     },
     {
-      title: '里程(公里)',
+      title: '里程（公里）',
       dataIndex: 'km',
       key: 'km',
     },
@@ -136,14 +141,25 @@ export default defineComponent({
       dataIndex: 'operation'
     }
     ];
-
-    watch(()=>trainStation.value.name,()=>{
-      if(Tool.isNotEmpty(trainStation.value.name)){
-        trainStation.value.namePinyin=pinyin(trainStation.value.name,{toneType:"none"}).replace(" ","");
-      }else {
-        trainStation.value.namePinyin="";
+    watch(() => trainStation.value.name, ()=>{
+      if (Tool.isNotEmpty(trainStation.value.name)) {
+        trainStation.value.namePinyin = pinyin(trainStation.value.name, { toneType: 'none'}).replaceAll(" ", "");
+      } else {
+        trainStation.value.namePinyin = "";
       }
-    },{immediate:true})
+    }, {immediate: true});
+
+    // 自动计算停车时长
+    watch(() => trainStation.value.inTime, ()=>{
+      let diff = dayjs(trainStation.value.outTime, 'HH:mm:ss').diff(dayjs(trainStation.value.inTime, 'HH:mm:ss'), 'seconds');
+      trainStation.value.stopTime = dayjs('00:00:00', 'HH:mm:ss').second(diff).format('HH:mm:ss');
+    }, {immediate: true});
+
+    // 自动计算停车时长
+    watch(() => trainStation.value.outTime, ()=>{
+      let diff = dayjs(trainStation.value.outTime, 'HH:mm:ss').diff(dayjs(trainStation.value.inTime, 'HH:mm:ss'), 'seconds');
+      trainStation.value.stopTime = dayjs('00:00:00', 'HH:mm:ss').second(diff).format('HH:mm:ss');
+    }, {immediate: true});
 
     const onAdd = () => {
       trainStation.value = {};
@@ -163,6 +179,8 @@ export default defineComponent({
           handleQuery({
             page: pagination.value.current,
             size: pagination.value.pageSize,
+            trainCode: params.value.trainCode
+
           });
         } else {
           notification.error({description: data.message});
@@ -197,7 +215,8 @@ export default defineComponent({
       axios.get("/business/admin/train-station/query-list", {
         params: {
           page: param.page,
-          size: param.size
+          size: param.size,
+          trainCode: params.value.trainCode
         }
       }).then((response) => {
         loading.value = false;
@@ -213,12 +232,11 @@ export default defineComponent({
       });
     };
 
-    const handleTableChange = (page) => {
-      // console.log("看看自带的分页参数都有啥：" + JSON.stringify(page));
-      pagination.value.pageSize = page.pageSize;
+    const handleTableChange = (pagination) => {
+      // console.log("看看自带的分页参数都有啥：" + pagination);
       handleQuery({
-        page: page.current,
-        size: page.pageSize
+        page: pagination.current,
+        size: pagination.pageSize
       });
     };
 
@@ -227,7 +245,6 @@ export default defineComponent({
         page: 1,
         size: pagination.value.pageSize
       });
-
     });
 
     return {
@@ -243,6 +260,7 @@ export default defineComponent({
       handleOk,
       onEdit,
       onDelete,
+      params
     };
   },
 });
