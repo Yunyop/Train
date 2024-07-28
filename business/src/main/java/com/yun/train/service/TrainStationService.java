@@ -43,24 +43,21 @@ public class TrainStationService {
     }
     public PageResp<TrainStationQueryResp> queryList(TrainStationQueryReq req){
         TrainStationExample trainStationExample = new TrainStationExample();
-        trainStationExample.setOrderByClause("id desc");
+        trainStationExample.setOrderByClause("train_code asc,`index` asc`");
         TrainStationExample.Criteria criteria = trainStationExample.createCriteria();
-
+        if (ObjectUtil.isNotNull(req.getTrainCode())) {
+            criteria.andTrainCodeEqualTo(req.getTrainCode());
+        }
         LOGGER.info("查询页码：{}",req.getPage());
         LOGGER.info("每页条数：{}",req.getSize());
         PageHelper.startPage(req.getPage(),req.getSize());
         List<TrainStation> trainStationList = trainStationMapper.selectByExample(trainStationExample);
         PageInfo<TrainStation> pageInfo = new PageInfo<>(trainStationList);
-
         LOGGER.info("总行数：{}",pageInfo.getTotal());
         LOGGER.info("总页数：{}",pageInfo.getPages());
-
         List<TrainStationQueryResp> list = BeanUtil.copyToList(trainStationList, TrainStationQueryResp.class);
-
         PageResp<TrainStationQueryResp> pageResp = new PageResp<>();
-
         pageResp.setList(list);
-
         pageResp.setTotal(pageInfo.getTotal());
         return pageResp;
     }
