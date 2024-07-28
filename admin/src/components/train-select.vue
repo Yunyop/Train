@@ -2,7 +2,7 @@
   <a-select v-model:value="trainCode" show-search allowClear
             :filter-option="filterTrainCodeOption"
             @change="onChange" placeholder="请选择车次"
-            :style="'width:'+_width"
+            :style="'width:'+localWidth"
   >
     <a-select-option v-for="item in trains" :key="item.code" :value="item.code" :lable="item.code+item.start+item.end">
       {{item.code}}|{{item.start}}~{{item.end}}
@@ -22,9 +22,9 @@ export default defineComponent({
   setup(props, { emit }) {
     const trainCode = ref();
     const trains = ref([]);
-    const _width=ref(props.width);
+    const localWidth=ref(props.width);
     if (Tool.isEmpty(props.width)){
-      _width.value="100%";
+      localWidth.value="100%";
     }
     // 利用watch，动态获取父组件的值，如果在onMOunted或其他方法里，则只有第一次生效
     watch(()=>props.modelValue,()=>{
@@ -66,7 +66,7 @@ export default defineComponent({
       trainCode,
       filterTrainCodeOption,
       onChange,
-      _width,
+      localWidth,
     }
   }
 })
