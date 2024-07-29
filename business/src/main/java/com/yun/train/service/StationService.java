@@ -1,12 +1,15 @@
 package com.yun.train.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yun.train.domain.Station;
 import com.yun.train.domain.StationExample;
+import com.yun.train.exception.BusinessException;
+import com.yun.train.exception.BusinessExceptionEnum;
 import com.yun.train.mapper.StationMapper;
 import com.yun.train.req.StationQueryReq;
 import com.yun.train.req.StationSaveReq;
@@ -32,6 +35,13 @@ public class StationService {
         DateTime now = DateTime.now();
         Station station = BeanUtil.copyProperties(req, Station.class);
         if (ObjectUtil.isNull(station.getId())) {
+
+//            保存之前，先校验唯一键是否存在
+            Station stationDB = selectByUnique(req.getName());
+            if (ObjectUtil.isNotEmpty(stationDB)){
+                throw new BusinessException(BusinessExceptionEnum.BUSINESS_STATION_NAME_UNIQUE_ERRO);
+            }
+
             station.setId(SnowUtil.getSnowflakeNextId());
             station.setCreateTime(now);
             station.setUpdateTime(now);
@@ -41,6 +51,18 @@ public class StationService {
             stationMapper.updateByPrimaryKey(station);
         }
     }
+
+    private Station selectByUnique(String name) {
+        StationExample stationExample = new StationExample();
+        stationExample.createCriteria().andNameEqualTo(name);
+        List<Station> stations = stationMapper.selectByExample(stationExample);
+        if (CollUtil.isNotEmpty(stations)){
+            return stations.get(0);
+        }else {
+            return null;
+        }
+    }
+
     public PageResp<StationQueryResp> queryList(StationQueryReq req){
         StationExample stationExample = new StationExample();
         stationExample.setOrderByClause("id desc");

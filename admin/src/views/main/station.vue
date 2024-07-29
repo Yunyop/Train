@@ -92,6 +92,7 @@ export default defineComponent({
     watch(()=>station.value.name,()=>{
       if(Tool.isNotEmpty(station.value.name)){
         station.value.namePinyin=pinyin(station.value.name,{toneType:"none"}).replace(" ","");
+        station.value.namePy=pinyin(station.value.name,{pattern:'first',toneType:'none'}).replaceAll(" ","");
       }else {
         station.value.namePinyin="";
       }

@@ -86,4 +86,5 @@ public class TrainCarriageService {
         trainCarriageExample.createCriteria().andTrainCodeEqualTo(trainCode);
         return trainCarriageMapper.selectByExample(trainCarriageExample);
     }
+
 }
