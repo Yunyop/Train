@@ -39,7 +39,7 @@ public class StationService {
 //            保存之前，先校验唯一键是否存在
             Station stationDB = selectByUnique(req.getName());
             if (ObjectUtil.isNotEmpty(stationDB)){
-                throw new BusinessException(BusinessExceptionEnum.BUSINESS_STATION_NAME_UNIQUE_ERRO);
+                throw new BusinessException(BusinessExceptionEnum.BUSINESS_STATION_NAME_UNIQUE_ERROR);
             }
 
             station.setId(SnowUtil.getSnowflakeNextId());
@@ -52,6 +52,7 @@ public class StationService {
         }
     }
 
+//    唯一键查询方法
     private Station selectByUnique(String name) {
         StationExample stationExample = new StationExample();
         stationExample.createCriteria().andNameEqualTo(name);

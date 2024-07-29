@@ -1,13 +1,18 @@
 package com.yun.train.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yun.train.domain.Station;
+import com.yun.train.domain.StationExample;
 import com.yun.train.domain.TrainCarriage;
 import com.yun.train.domain.TrainCarriageExample;
 import com.yun.train.enums.SeatColEnum;
+import com.yun.train.exception.BusinessException;
+import com.yun.train.exception.BusinessExceptionEnum;
 import com.yun.train.mapper.TrainCarriageMapper;
 import com.yun.train.req.TrainCarriageQueryReq;
 import com.yun.train.req.TrainCarriageSaveReq;
@@ -40,6 +45,11 @@ public class TrainCarriageService {
 
         TrainCarriage trainCarriage = BeanUtil.copyProperties(req, TrainCarriage.class);
         if (ObjectUtil.isNull(trainCarriage.getId())) {
+            //        保存之前，先校验唯一键是否存在
+            TrainCarriage trainCarriageDB = selectByUnique(req.getTrainCode(), req.getIndex());
+            if (ObjectUtil.isNotEmpty(trainCarriageDB)){
+                throw new BusinessException(BusinessExceptionEnum.BUSINESS_TRAIN_CARRIAGE_INDEX_UNIQUE_ERROR);
+            }
             trainCarriage.setId(SnowUtil.getSnowflakeNextId());
             trainCarriage.setCreateTime(now);
             trainCarriage.setUpdateTime(now);
@@ -47,6 +57,20 @@ public class TrainCarriageService {
         } else {
             trainCarriage.setUpdateTime(now);
             trainCarriageMapper.updateByPrimaryKey(trainCarriage);
+        }
+    }
+
+    //    唯一键查询方法
+    private TrainCarriage selectByUnique(String trainCode,Integer index) {
+        TrainCarriageExample trainCarriageExample = new TrainCarriageExample();
+        trainCarriageExample.createCriteria()
+                .andTrainCodeEqualTo(trainCode)
+                .andIndexEqualTo(index);
+        List<TrainCarriage> trainCarriage = trainCarriageMapper.selectByExample(trainCarriageExample);
+        if (CollUtil.isNotEmpty(trainCarriage)){
+            return trainCarriage.get(0);
+        }else {
+            return null;
         }
     }
     public PageResp<TrainCarriageQueryResp> queryList(TrainCarriageQueryReq req){

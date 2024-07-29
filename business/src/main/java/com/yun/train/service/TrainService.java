@@ -1,12 +1,17 @@
 package com.yun.train.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yun.train.domain.Train;
+import com.yun.train.domain.TrainCarriage;
+import com.yun.train.domain.TrainCarriageExample;
 import com.yun.train.domain.TrainExample;
+import com.yun.train.exception.BusinessException;
+import com.yun.train.exception.BusinessExceptionEnum;
 import com.yun.train.mapper.TrainMapper;
 import com.yun.train.req.TrainQueryReq;
 import com.yun.train.req.TrainSaveReq;
@@ -32,6 +37,11 @@ public class TrainService {
         DateTime now = DateTime.now();
         Train train = BeanUtil.copyProperties(req, Train.class);
         if (ObjectUtil.isNull(train.getId())) {
+            //        保存之前，先校验唯一键是否存在
+            Train trainDB = selectByUnique(req.getCode());
+            if (ObjectUtil.isNotEmpty(trainDB)){
+                throw new BusinessException(BusinessExceptionEnum.BUSINESS_TRAIN_CODE_UNIQUE_ERROR);
+            }
             train.setId(SnowUtil.getSnowflakeNextId());
             train.setCreateTime(now);
             train.setUpdateTime(now);
@@ -39,6 +49,19 @@ public class TrainService {
         } else {
             train.setUpdateTime(now);
             trainMapper.updateByPrimaryKey(train);
+        }
+    }
+
+    //    唯一键查询方法
+    
+    private Train selectByUnique(String code) {
+        TrainExample trainExample = new TrainExample();
+        trainExample.createCriteria().andCodeEqualTo(code);
+        List<Train> train = trainMapper.selectByExample(trainExample);
+        if (CollUtil.isNotEmpty(train)){
+            return train.get(0);
+        }else {
+            return null;
         }
     }
 
