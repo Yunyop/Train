@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
 @ComponentScan("com.yun")
-@MapperScan("com.yun.train.*.mapper")
+@MapperScan("com.yun.train.mapper")
 public class BatchApplication {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BatchApplication.class);
