@@ -28,6 +28,25 @@ create table train
     unique key `code_unique`(`code`)
 )engine =innodb default charset utf8mb4 comment '车次';
 
+-- auto-generated definition
+create table train_carriage
+(
+    id          bigint      not null comment 'id'
+        primary key,
+    train_code  varchar(20) not null comment '车次编号',
+    `index`     int         not null comment '厢号',
+    seat_type   char        not null comment '座位类型|枚举[SeatTypeEnum]',
+    seat_count  int         not null comment '座位数',
+    row_count   int         not null comment '排数',
+    col_count   int         not null comment '列数',
+    create_time datetime(3) null comment '新增时间',
+    update_time datetime(3) null comment '修改时间',
+    constraint train_code_index_unique
+        unique (train_code, `index`)
+)
+    comment '火车车厢';
+
+
 drop table if exists train_station;
 create table train_station
 (
@@ -106,4 +125,25 @@ create table daily_train
         primary key (id),
     unique key `date_code_unique`(`code`,`date`)
 )engine =innodb default charset utf8mb4 comment '车次';
+
+-- auto-generated definition
+drop table if exists `daily_train_carriage`;
+
+create table train_business.daily_train_carriage
+(
+    id          bigint      not null comment 'id'
+        primary key,
+    date        date        not null comment '日期',
+    train_code  varchar(20) not null comment '车次编号',
+    `index`     int         not null comment '厢号',
+    seat_type   char        not null comment '座位类型|枚举[SeatTypeEnum]',
+    seat_count  int         not null comment '座位数',
+    row_count   int         not null comment '排数',
+    col_count   int         not null comment '列数',
+    create_time datetime(3) null comment '新增时间',
+    update_time datetime(3) null comment '修改时间',
+    constraint date_train_code_index_unique
+        unique (train_code, `index`, date)
+)
+    comment '火车车厢';
 

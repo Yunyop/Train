@@ -43,9 +43,13 @@ export default defineComponent({
             业务管理
           </span>
         </template>
-        <a-menu-item key="/business/daily_train">
-          <router-link to="/business/daily_train">
+        <a-menu-item key="/business/daily-train">
+          <router-link to="/business/daily-train">
             <user-outlined/>&nbsp;每日车次
+          </router-link>
+        </a-menu-item><a-menu-item key="/business/daily-train-carriage">
+          <router-link to="/business/daily-train-carriage">
+            <user-outlined/>&nbsp;每日车厢
           </router-link>
         </a-menu-item>
       </a-sub-menu>
