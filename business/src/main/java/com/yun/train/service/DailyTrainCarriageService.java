@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yun.train.domain.DailyTrainCarriage;
 import com.yun.train.domain.DailyTrainCarriageExample;
+import com.yun.train.enums.SeatColEnum;
 import com.yun.train.mapper.DailyTrainCarriageMapper;
 import com.yun.train.req.DailyTrainCarriageQueryReq;
 import com.yun.train.req.DailyTrainCarriageSaveReq;
@@ -30,6 +31,11 @@ public class DailyTrainCarriageService {
     private DailyTrainCarriageMapper dailyTrainCarriageMapper;
     public void save(DailyTrainCarriageSaveReq req) {
         DateTime now = DateTime.now();
+        //自动计算出列数和总座位数
+        List<SeatColEnum> seatColEnums=SeatColEnum.getColsByType(req.getSeatType());
+        req.setColCount(seatColEnums.size());
+        req.setSeatCount(req.getColCount()*req.getRowCount());
+
         DailyTrainCarriage dailyTrainCarriage = BeanUtil.copyProperties(req, DailyTrainCarriage.class);
         if (ObjectUtil.isNull(dailyTrainCarriage.getId())) {
             dailyTrainCarriage.setId(SnowUtil.getSnowflakeNextId());
@@ -43,8 +49,14 @@ public class DailyTrainCarriageService {
     }
     public PageResp<DailyTrainCarriageQueryResp> queryList(DailyTrainCarriageQueryReq req){
         DailyTrainCarriageExample dailyTrainCarriageExample = new DailyTrainCarriageExample();
-        dailyTrainCarriageExample.setOrderByClause("id desc");
+        dailyTrainCarriageExample.setOrderByClause("date desc,train_code asc,`index` asc");
         DailyTrainCarriageExample.Criteria criteria = dailyTrainCarriageExample.createCriteria();
+        if (ObjectUtil.isNotNull(req.getDate())) {
+            criteria.andDateEqualTo(req.getDate());
+        }
+        if (ObjectUtil.isNotEmpty(req.getTrainCode())) {
+            criteria.andTrainCodeEqualTo(req.getTrainCode());
+        }
 
         LOGGER.info("查询页码：{}",req.getPage());
         LOGGER.info("每页条数：{}",req.getSize());
