@@ -15,7 +15,7 @@ import java.util.*;
 
 public class ServerGenerator {
 
-    static boolean readOnly = true;
+    static boolean readOnly = false;
 
 //    static String vuePath = "web/src/views/main/";
     static String vuePath = "admin/src/views/main/";
@@ -23,6 +23,7 @@ public class ServerGenerator {
     static String serverPath = "[module]/src/main/java/com/yun/train/";
 
     static String pomPath = "generator/pom.xml";
+    static String module = "";
     static {
         new File(serverPath).mkdir();
     }
@@ -30,7 +31,8 @@ public class ServerGenerator {
     public static void main(String[] args) throws Exception {
         String generatorPath = getGeneratorPath();
 
-        String module = generatorPath.replace("src/main/resources/generator-config-", "").replace(".xml", "");
+        module = generatorPath.replace("src/main/resources/generator-config-", "").replace(".xml", "");
+
         System.out.println("module:" + module);
 
         serverPath = serverPath.replace("[module]", module);
@@ -71,14 +73,15 @@ public class ServerGenerator {
         param.put("readOnly", readOnly);
         System.out.println("组装参数：" + param);
 
-//        genModule(Domain, param, "service", "service");
+        genModule(Domain, param, "service", "service");
 //        会员端使用
 //        genModule(Domain, param, "controller", "controller");
 //        控台端使用
-//        genModule(Domain, param, "controller/admin", "adminController");
-//        genModule(Domain, param, "req", "saveReq");
-//        genModule(Domain, param, "req", "queryReq");
-//        genModule(Domain, param, "resp", "queryResp");
+        genModule(Domain, param, "controller/admin", "adminController");
+
+        genModule(Domain, param, "req", "saveReq");
+        genModule(Domain, param, "req", "queryReq");
+        genModule(Domain, param, "resp", "queryResp");
 
         genModuleVue(do_main, param);
     }
@@ -95,8 +98,8 @@ public class ServerGenerator {
 
     private static void genModuleVue(String do_main, Map<String, Object> param) throws IOException, TemplateException {
         FreemarkerUtil.initConfig("vue.ftl");
-        new File(vuePath).mkdirs(); // Ensure the directory exists
-        String fileName = vuePath + do_main + ".vue";
+        new File(vuePath+module).mkdirs(); // Ensure the directory exists
+        String fileName = vuePath + module + "/" + do_main + ".vue";
         System.out.println("开始生成：" + fileName);
         FreemarkerUtil.generator(fileName, param);
     }

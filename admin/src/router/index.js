@@ -38,6 +38,14 @@ const routes = [
                         component:() => import( '../views/main/base/train-seat.vue'),
                 }]
             },{
+            path: 'business/',
+                children:[
+                    {
+                        path: 'daily_train',
+                        component:() => import( '../views/main/business/daily-train.vue'),
+                    }
+                    ]
+            },{
                 path: 'batch/',
                 children: [{
                     path: 'job',
