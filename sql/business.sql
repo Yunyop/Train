@@ -168,3 +168,22 @@ create table train_business.daily_train_carriage
 )
     comment '火车车厢';
 
+
+CREATE TABLE `daily_train_seat` (
+                              id BIGINT NOT NULL COMMENT 'id',
+                              date date not null comment '日期',
+                              train_code VARCHAR(20) NOT NULL COMMENT '车次编号',
+                              carriage_index INT NOT NULL COMMENT '箱序',
+                              `row` CHAR(2) NOT NULL COMMENT '排号|01,02',
+                              col CHAR(1) NOT NULL COMMENT '列号|枚举[SeatColEnum]',
+                              seat_type CHAR(1) NOT NULL COMMENT '座位类型|枚举[SeatTypeEnum]',
+                              carriage_seat_index INT NOT NULL COMMENT '同车厢座序',
+                              sell varchar(50) not null comment '售卖情况|将经过的车站用01拼接，0表示可卖，1表示已卖',
+                              create_time DATETIME(3) NULL COMMENT '新增时间',
+                              update_time DATETIME(3) NULL COMMENT '修改时间',
+                              CONSTRAINT train_seat_pk PRIMARY KEY (id)
+) COMMENT '每日座位'
+    ENGINE = InnoDB
+    CHARSET = utf8mb4;
+
+
