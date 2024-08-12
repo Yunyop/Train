@@ -15,7 +15,7 @@ import java.util.*;
 
 public class ServerGenerator {
 
-    static boolean readOnly = false;
+    static boolean readOnly = true;
 
 //    static String vuePath = "web/src/views/main/";
     static String vuePath = "admin/src/views/main/";
