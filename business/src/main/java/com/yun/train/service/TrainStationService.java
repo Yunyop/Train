@@ -85,7 +85,7 @@ public class TrainStationService {
 
     public PageResp<TrainStationQueryResp> queryList(TrainStationQueryReq req){
         TrainStationExample trainStationExample = new TrainStationExample();
-        trainStationExample.setOrderByClause("id asc");
+        trainStationExample.setOrderByClause("train_code asc ,`index` asc");
         TrainStationExample.Criteria criteria = trainStationExample.createCriteria();
         if (ObjectUtil.isNotEmpty(req.getTrainCode())) {
             criteria.andTrainCodeEqualTo(req.getTrainCode());
@@ -105,5 +105,12 @@ public class TrainStationService {
     }
     public void delete(long id) {
         trainStationMapper.deleteByPrimaryKey(id);
+    }
+
+    public List<TrainStation> selectByTrainCode(String trainCode) {
+        TrainStationExample trainStationExample = new TrainStationExample();
+        trainStationExample.setOrderByClause("`index` asc");
+        trainStationExample.createCriteria().andTrainCodeEqualTo(trainCode);
+        return trainStationMapper.selectByExample(trainStationExample);
     }
 }
