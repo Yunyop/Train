@@ -7,6 +7,7 @@ import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yun.train.domain.TrainCarriage;
+import com.yun.train.domain.TrainCarriageExample;
 import com.yun.train.domain.TrainSeat;
 import com.yun.train.domain.TrainSeatExample;
 import com.yun.train.enums.SeatColEnum;
@@ -120,5 +121,13 @@ public class TrainSeatService {
                 }
             }
         }
+    }
+
+//    查出所有座位
+    public List<TrainSeat> selectByTrainCode(String trainCode){
+        TrainSeatExample trainSeatExample = new TrainSeatExample();
+        trainSeatExample.setOrderByClause("`id` desc");
+        trainSeatExample.createCriteria().andTrainCodeEqualTo(trainCode);
+        return trainSeatMapper.selectByExample(trainSeatExample);
     }
 }
