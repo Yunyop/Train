@@ -559,52 +559,52 @@ public class DailyTrainTicketExample {
             return (Criteria) this;
         }
 
-        public Criteria andStartIndexEqualTo(Byte value) {
+        public Criteria andStartIndexEqualTo(Integer value) {
             addCriterion("start_index =", value, "startIndex");
             return (Criteria) this;
         }
 
-        public Criteria andStartIndexNotEqualTo(Byte value) {
+        public Criteria andStartIndexNotEqualTo(Integer value) {
             addCriterion("start_index <>", value, "startIndex");
             return (Criteria) this;
         }
 
-        public Criteria andStartIndexGreaterThan(Byte value) {
+        public Criteria andStartIndexGreaterThan(Integer value) {
             addCriterion("start_index >", value, "startIndex");
             return (Criteria) this;
         }
 
-        public Criteria andStartIndexGreaterThanOrEqualTo(Byte value) {
+        public Criteria andStartIndexGreaterThanOrEqualTo(Integer value) {
             addCriterion("start_index >=", value, "startIndex");
             return (Criteria) this;
         }
 
-        public Criteria andStartIndexLessThan(Byte value) {
+        public Criteria andStartIndexLessThan(Integer value) {
             addCriterion("start_index <", value, "startIndex");
             return (Criteria) this;
         }
 
-        public Criteria andStartIndexLessThanOrEqualTo(Byte value) {
+        public Criteria andStartIndexLessThanOrEqualTo(Integer value) {
             addCriterion("start_index <=", value, "startIndex");
             return (Criteria) this;
         }
 
-        public Criteria andStartIndexIn(List<Byte> values) {
+        public Criteria andStartIndexIn(List<Integer> values) {
             addCriterion("start_index in", values, "startIndex");
             return (Criteria) this;
         }
 
-        public Criteria andStartIndexNotIn(List<Byte> values) {
+        public Criteria andStartIndexNotIn(List<Integer> values) {
             addCriterion("start_index not in", values, "startIndex");
             return (Criteria) this;
         }
 
-        public Criteria andStartIndexBetween(Byte value1, Byte value2) {
+        public Criteria andStartIndexBetween(Integer value1, Integer value2) {
             addCriterion("start_index between", value1, value2, "startIndex");
             return (Criteria) this;
         }
 
-        public Criteria andStartIndexNotBetween(Byte value1, Byte value2) {
+        public Criteria andStartIndexNotBetween(Integer value1, Integer value2) {
             addCriterion("start_index not between", value1, value2, "startIndex");
             return (Criteria) this;
         }
@@ -819,52 +819,52 @@ public class DailyTrainTicketExample {
             return (Criteria) this;
         }
 
-        public Criteria andEndIndexEqualTo(Byte value) {
+        public Criteria andEndIndexEqualTo(Integer value) {
             addCriterion("end_index =", value, "endIndex");
             return (Criteria) this;
         }
 
-        public Criteria andEndIndexNotEqualTo(Byte value) {
+        public Criteria andEndIndexNotEqualTo(Integer value) {
             addCriterion("end_index <>", value, "endIndex");
             return (Criteria) this;
         }
 
-        public Criteria andEndIndexGreaterThan(Byte value) {
+        public Criteria andEndIndexGreaterThan(Integer value) {
             addCriterion("end_index >", value, "endIndex");
             return (Criteria) this;
         }
 
-        public Criteria andEndIndexGreaterThanOrEqualTo(Byte value) {
+        public Criteria andEndIndexGreaterThanOrEqualTo(Integer value) {
             addCriterion("end_index >=", value, "endIndex");
             return (Criteria) this;
         }
 
-        public Criteria andEndIndexLessThan(Byte value) {
+        public Criteria andEndIndexLessThan(Integer value) {
             addCriterion("end_index <", value, "endIndex");
             return (Criteria) this;
         }
 
-        public Criteria andEndIndexLessThanOrEqualTo(Byte value) {
+        public Criteria andEndIndexLessThanOrEqualTo(Integer value) {
             addCriterion("end_index <=", value, "endIndex");
             return (Criteria) this;
         }
 
-        public Criteria andEndIndexIn(List<Byte> values) {
+        public Criteria andEndIndexIn(List<Integer> values) {
             addCriterion("end_index in", values, "endIndex");
             return (Criteria) this;
         }
 
-        public Criteria andEndIndexNotIn(List<Byte> values) {
+        public Criteria andEndIndexNotIn(List<Integer> values) {
             addCriterion("end_index not in", values, "endIndex");
             return (Criteria) this;
         }
 
-        public Criteria andEndIndexBetween(Byte value1, Byte value2) {
+        public Criteria andEndIndexBetween(Integer value1, Integer value2) {
             addCriterion("end_index between", value1, value2, "endIndex");
             return (Criteria) this;
         }
 
-        public Criteria andEndIndexNotBetween(Byte value1, Byte value2) {
+        public Criteria andEndIndexNotBetween(Integer value1, Integer value2) {
             addCriterion("end_index not between", value1, value2, "endIndex");
             return (Criteria) this;
         }
@@ -939,52 +939,52 @@ public class DailyTrainTicketExample {
             return (Criteria) this;
         }
 
-        public Criteria andYdzPriceEqualTo(Integer value) {
+        public Criteria andYdzPriceEqualTo(BigDecimal value) {
             addCriterion("ydz_price =", value, "ydzPrice");
             return (Criteria) this;
         }
 
-        public Criteria andYdzPriceNotEqualTo(Integer value) {
+        public Criteria andYdzPriceNotEqualTo(BigDecimal value) {
             addCriterion("ydz_price <>", value, "ydzPrice");
             return (Criteria) this;
         }
 
-        public Criteria andYdzPriceGreaterThan(Integer value) {
+        public Criteria andYdzPriceGreaterThan(BigDecimal value) {
             addCriterion("ydz_price >", value, "ydzPrice");
             return (Criteria) this;
         }
 
-        public Criteria andYdzPriceGreaterThanOrEqualTo(Integer value) {
+        public Criteria andYdzPriceGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("ydz_price >=", value, "ydzPrice");
             return (Criteria) this;
         }
 
-        public Criteria andYdzPriceLessThan(Integer value) {
+        public Criteria andYdzPriceLessThan(BigDecimal value) {
             addCriterion("ydz_price <", value, "ydzPrice");
             return (Criteria) this;
         }
 
-        public Criteria andYdzPriceLessThanOrEqualTo(Integer value) {
+        public Criteria andYdzPriceLessThanOrEqualTo(BigDecimal value) {
             addCriterion("ydz_price <=", value, "ydzPrice");
             return (Criteria) this;
         }
 
-        public Criteria andYdzPriceIn(List<Integer> values) {
+        public Criteria andYdzPriceIn(List<BigDecimal> values) {
             addCriterion("ydz_price in", values, "ydzPrice");
             return (Criteria) this;
         }
 
-        public Criteria andYdzPriceNotIn(List<Integer> values) {
+        public Criteria andYdzPriceNotIn(List<BigDecimal> values) {
             addCriterion("ydz_price not in", values, "ydzPrice");
             return (Criteria) this;
         }
 
-        public Criteria andYdzPriceBetween(Integer value1, Integer value2) {
+        public Criteria andYdzPriceBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("ydz_price between", value1, value2, "ydzPrice");
             return (Criteria) this;
         }
 
-        public Criteria andYdzPriceNotBetween(Integer value1, Integer value2) {
+        public Criteria andYdzPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("ydz_price not between", value1, value2, "ydzPrice");
             return (Criteria) this;
         }
@@ -1059,52 +1059,52 @@ public class DailyTrainTicketExample {
             return (Criteria) this;
         }
 
-        public Criteria andEdzPriceEqualTo(Integer value) {
+        public Criteria andEdzPriceEqualTo(BigDecimal value) {
             addCriterion("edz_price =", value, "edzPrice");
             return (Criteria) this;
         }
 
-        public Criteria andEdzPriceNotEqualTo(Integer value) {
+        public Criteria andEdzPriceNotEqualTo(BigDecimal value) {
             addCriterion("edz_price <>", value, "edzPrice");
             return (Criteria) this;
         }
 
-        public Criteria andEdzPriceGreaterThan(Integer value) {
+        public Criteria andEdzPriceGreaterThan(BigDecimal value) {
             addCriterion("edz_price >", value, "edzPrice");
             return (Criteria) this;
         }
 
-        public Criteria andEdzPriceGreaterThanOrEqualTo(Integer value) {
+        public Criteria andEdzPriceGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("edz_price >=", value, "edzPrice");
             return (Criteria) this;
         }
 
-        public Criteria andEdzPriceLessThan(Integer value) {
+        public Criteria andEdzPriceLessThan(BigDecimal value) {
             addCriterion("edz_price <", value, "edzPrice");
             return (Criteria) this;
         }
 
-        public Criteria andEdzPriceLessThanOrEqualTo(Integer value) {
+        public Criteria andEdzPriceLessThanOrEqualTo(BigDecimal value) {
             addCriterion("edz_price <=", value, "edzPrice");
             return (Criteria) this;
         }
 
-        public Criteria andEdzPriceIn(List<Integer> values) {
+        public Criteria andEdzPriceIn(List<BigDecimal> values) {
             addCriterion("edz_price in", values, "edzPrice");
             return (Criteria) this;
         }
 
-        public Criteria andEdzPriceNotIn(List<Integer> values) {
+        public Criteria andEdzPriceNotIn(List<BigDecimal> values) {
             addCriterion("edz_price not in", values, "edzPrice");
             return (Criteria) this;
         }
 
-        public Criteria andEdzPriceBetween(Integer value1, Integer value2) {
+        public Criteria andEdzPriceBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("edz_price between", value1, value2, "edzPrice");
             return (Criteria) this;
         }
 
-        public Criteria andEdzPriceNotBetween(Integer value1, Integer value2) {
+        public Criteria andEdzPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("edz_price not between", value1, value2, "edzPrice");
             return (Criteria) this;
         }

@@ -16,7 +16,7 @@ public class DailyTrainTicket {
 
     private Date startTime;
 
-    private Byte startIndex;
+    private Integer startIndex;
 
     private String end;
 
@@ -24,15 +24,15 @@ public class DailyTrainTicket {
 
     private Date endTime;
 
-    private Byte endIndex;
+    private Integer endIndex;
 
     private Integer ydz;
 
-    private Integer ydzPrice;
+    private BigDecimal ydzPrice;
 
     private Integer edz;
 
-    private Integer edzPrice;
+    private BigDecimal edzPrice;
 
     private Integer rw;
 
@@ -94,11 +94,11 @@ public class DailyTrainTicket {
         this.startTime = startTime;
     }
 
-    public Byte getStartIndex() {
+    public Integer getStartIndex() {
         return startIndex;
     }
 
-    public void setStartIndex(Byte startIndex) {
+    public void setStartIndex(Integer startIndex) {
         this.startIndex = startIndex;
     }
 
@@ -126,11 +126,11 @@ public class DailyTrainTicket {
         this.endTime = endTime;
     }
 
-    public Byte getEndIndex() {
+    public Integer getEndIndex() {
         return endIndex;
     }
 
-    public void setEndIndex(Byte endIndex) {
+    public void setEndIndex(Integer endIndex) {
         this.endIndex = endIndex;
     }
 
@@ -142,11 +142,11 @@ public class DailyTrainTicket {
         this.ydz = ydz;
     }
 
-    public Integer getYdzPrice() {
+    public BigDecimal getYdzPrice() {
         return ydzPrice;
     }
 
-    public void setYdzPrice(Integer ydzPrice) {
+    public void setYdzPrice(BigDecimal ydzPrice) {
         this.ydzPrice = ydzPrice;
     }
 
@@ -158,11 +158,11 @@ public class DailyTrainTicket {
         this.edz = edz;
     }
 
-    public Integer getEdzPrice() {
+    public BigDecimal getEdzPrice() {
         return edzPrice;
     }
 
-    public void setEdzPrice(Integer edzPrice) {
+    public void setEdzPrice(BigDecimal edzPrice) {
         this.edzPrice = edzPrice;
     }
 

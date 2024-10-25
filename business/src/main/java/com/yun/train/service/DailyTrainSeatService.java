@@ -19,6 +19,7 @@ import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -81,6 +82,7 @@ public class DailyTrainSeatService {
         dailyTrainSeatMapper.deleteByPrimaryKey(id);
     }
 
+    @Transactional
     public void genDaily(Date date, String trainCode){
         LOGGER.info("生成日期【{}】车次【{}】的座位信息开始", DateUtil.formatDate(date), trainCode);
 
@@ -97,11 +99,12 @@ public class DailyTrainSeatService {
 
 //        查出某车次的所有信息
         List<TrainSeat> seatList = trainSeatService.selectByTrainCode(trainCode);
+        if(CollUtil.isEmpty(seatList)){
+            LOGGER.info("该车次没有座位基础数据，生成该车次的座位信息结束");
+            return;
+        }
+
         for (TrainSeat trainSeat:seatList){
-            if(CollUtil.isEmpty(seatList)){
-                LOGGER.info("该车次没有座位基础数据，生成该车次的座位信息结束");
-                return;
-            }
             DateTime now = DateTime.now();
             DailyTrainSeat dailyTrainSeat = BeanUtil.copyProperties(trainSeat, DailyTrainSeat.class);
             dailyTrainSeat.setId(SnowUtil.getSnowflakeNextId());

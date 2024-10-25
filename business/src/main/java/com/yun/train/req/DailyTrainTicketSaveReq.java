@@ -87,7 +87,7 @@ public class DailyTrainTicketSaveReq {
      * 一等座票价
      */
     @NotNull(message = "【一等座票价】不能为空")
-    private Integer ydzPrice;
+    private BigDecimal ydzPrice;
 
     /**
      * 二等座余票
@@ -99,7 +99,7 @@ public class DailyTrainTicketSaveReq {
      * 二等座票价
      */
     @NotNull(message = "【二等座票价】不能为空")
-    private Integer edzPrice;
+    private BigDecimal edzPrice;
 
     /**
      * 软卧余票
@@ -233,11 +233,11 @@ public class DailyTrainTicketSaveReq {
         this.ydz = ydz;
     }
 
-    public Integer getYdzPrice() {
+    public BigDecimal getYdzPrice() {
         return ydzPrice;
     }
 
-    public void setYdzPrice(Integer ydzPrice) {
+    public void setYdzPrice(BigDecimal ydzPrice) {
         this.ydzPrice = ydzPrice;
     }
 
@@ -249,11 +249,11 @@ public class DailyTrainTicketSaveReq {
         this.edz = edz;
     }
 
-    public Integer getEdzPrice() {
+    public BigDecimal getEdzPrice() {
         return edzPrice;
     }
 
-    public void setEdzPrice(Integer edzPrice) {
+    public void setEdzPrice(BigDecimal edzPrice) {
         this.edzPrice = edzPrice;
     }
 

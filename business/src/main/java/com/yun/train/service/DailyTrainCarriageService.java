@@ -19,6 +19,7 @@ import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -88,6 +89,8 @@ public class DailyTrainCarriageService {
     }
 
 //    生成每日车厢
+
+    @Transactional
     public void genDaily(Date date, String trainCode){
         LOGGER.info("生成日期【{}】车次【{}】的车厢信息开始", DateUtil.formatDate(date), trainCode);
 
@@ -100,11 +103,12 @@ public class DailyTrainCarriageService {
 
 //        查出某车次的所有信息
         List<TrainCarriage> carriageList = trainCarriageService.selectByTrainCode(trainCode);
+        if(CollUtil.isEmpty(carriageList)){
+            LOGGER.info("该车次没有车厢基础数据，生成该车次的车厢信息结束");
+            return;
+        }
+
         for (TrainCarriage trainCarriage:carriageList){
-            if(CollUtil.isEmpty(carriageList)){
-                LOGGER.info("该车次没有车厢基础数据，生成该车次的车厢信息结束");
-                return;
-            }
             DateTime now = DateTime.now();
             DailyTrainCarriage dailyTrainCarriage = BeanUtil.copyProperties(trainCarriage, DailyTrainCarriage.class);
             dailyTrainCarriage.setId(SnowUtil.getSnowflakeNextId());

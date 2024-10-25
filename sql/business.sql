@@ -184,8 +184,10 @@ CREATE TABLE `daily_train_seat` (
                               CONSTRAINT train_seat_pk PRIMARY KEY (id)
 ) COMMENT '每日座位'
     ENGINE = InnoDB
+
     CHARSET = utf8mb4;
 
+drop table if exists `daily_train_ticket`;
 CREATE TABLE `daily_train_ticket` (
                                       `id` bigint NOT NULL COMMENT 'id',
                                       `date` date NOT NULL COMMENT '日期',
@@ -193,15 +195,15 @@ CREATE TABLE `daily_train_ticket` (
                                       `start` varchar(20) NOT NULL COMMENT '出发站',
                                       `start_pinyin` varchar(50) NOT NULL COMMENT '出发站拼音',
                                       `start_time` time NOT NULL COMMENT '出发时间',
-                                      `start_index` tinyint NOT NULL COMMENT '出发站序|本站是整个车次的第几站',
+                                      `start_index` int NOT NULL COMMENT '出发站序|本站是整个车次的第几站',
                                       `end` varchar(20) NOT NULL COMMENT '到达站',
                                       `end_pinyin` varchar(50) NOT NULL COMMENT '到达站拼音',
                                       `end_time` time NOT NULL COMMENT '到站时间',
-                                      `end_index` tinyint NOT NULL COMMENT '到站站序|本站是整个车次的第几站',
+                                      `end_index` int NOT NULL COMMENT '到站站序|本站是整个车次的第几站',
                                       `ydz` int NOT NULL COMMENT '一等座余票',
-                                      `ydz_price` int NOT NULL COMMENT '一等座票价',
+                                      `ydz_price` decimal(8,2) NOT NULL COMMENT '一等座票价',
                                       `edz` int NOT NULL COMMENT '二等座余票',
-                                      `edz_price` int NOT NULL COMMENT '二等座票价',
+                                      `edz_price` decimal(8,2) NOT NULL COMMENT '二等座票价',
                                       `rw` int NOT NULL COMMENT '软卧余票',
                                       `rw_price` decimal(8,2) NOT NULL COMMENT '软卧票价',
                                       `yw` int NOT NULL COMMENT '硬卧余票',
@@ -211,13 +213,4 @@ CREATE TABLE `daily_train_ticket` (
                                       PRIMARY KEY (`id`),
                                       UNIQUE KEY `daily_train_code_start_end_unique` (`date`,`train_code`,`start`,`end`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='余票信息'
-
-
-
-
-
-
-
-
-
 

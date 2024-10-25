@@ -73,7 +73,7 @@ public class ServerGenerator {
         param.put("readOnly", readOnly);
         System.out.println("组装参数：" + param);
 
-        genModule(Domain, param, "service", "service");
+//        genModule(Domain, param, "service", "service");
 //        会员端使用
 //        genModule(Domain, param, "controller", "controller");
 //        控台端使用

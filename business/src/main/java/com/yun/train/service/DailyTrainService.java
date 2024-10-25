@@ -9,6 +9,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yun.train.domain.DailyTrain;
 import com.yun.train.domain.DailyTrainExample;
+import com.yun.train.domain.DailyTrainTicket;
 import com.yun.train.domain.Train;
 import com.yun.train.mapper.DailyTrainMapper;
 import com.yun.train.req.DailyTrainQueryReq;
@@ -20,6 +21,7 @@ import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -44,6 +46,9 @@ public class DailyTrainService {
 
     @Resource
     private DailyTrainSeatService dailyTrainSeatService;
+
+    @Resource
+    private DailyTrainTicketService dailyTrainTicketService;
 
     public void save(DailyTrainSaveReq req) {
         DateTime now = DateTime.now();
@@ -94,6 +99,7 @@ public class DailyTrainService {
      * 生成某日所有车次信息，包括车次、车站、车厢、座位
      * @param date
      */
+    @Transactional
     public void genDaily(Date date){
         List<Train> trainList = trainService.selectAll();
         if(CollUtil.isEmpty(trainList)){
@@ -136,6 +142,10 @@ public class DailyTrainService {
 
         //            生成该车次的座位的数据
         dailyTrainSeatService.genDaily(date,train.getCode());
+
+        //            生成该车次的余票的数据
+        dailyTrainTicketService.genDaily(date,train.getCode());
+
 
         LOGGER.info("生成日期【{}】车次【{}】的车站信息结束",DateUtil.formatDate(date), train.getCode());
 
