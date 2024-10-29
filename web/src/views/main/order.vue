@@ -24,6 +24,34 @@
   选中的乘客:{{passengerChecks}}
   <br>
   购票列表:{{tickets}}
+  <div class="order-tickets">
+    <a-row class="order-tickets-header" v-if="tickets.length>0">
+      <a-col :span="2">乘客</a-col>
+      <a-col :span="6">身份证</a-col>
+      <a-col :span="4">票种</a-col>
+      <a-col :span="4">座位类型</a-col>
+    </a-row>
+    <a-row class="order-tickets-row" v-for="ticket in tickets" :key="ticket.passengerId">
+
+      <a-col :span="2">{{ticket.passengerName}}</a-col>
+      <a-col :span="6">{{ticket.passengerIdCard}}</a-col>
+      <a-col :span="4">
+        <a-select v-model:value="ticket.passengerType" style="width: 100%">
+          <a-select-option v-for="item in PASSENGER_TYPE_ARRAY" :key="item.code" :value="item.code">
+            {{item.desc}}
+          </a-select-option>
+        </a-select>
+      </a-col>
+      <a-col :span="4">
+        <a-select v-model:value="ticket.seatTypeCode" style="width: 100%">
+          <a-select-option v-for="item in seatTypes" :key="item.code" :value="item.code">
+            {{item.desc}}
+          </a-select-option>
+        </a-select>
+      </a-col>
+    </a-row>
+
+  </div>
   <br>
 </template>
 <script >
@@ -85,16 +113,17 @@ export default defineComponent({
     // }
 
     const tickets=ref([]);
+    const PASSENGER_TYPE_ARRAY=window.PASSENGER_TYPE_ARRAY;
     // 勾选或去掉某个乘客时，在购票列表加上或去掉一张表
     watch(()=>passengerChecks.value,(newVal,oldVal)=>{
       console.log("勾选乘客发生变化",newVal,oldVal)
       // 每次有变化时，把购票列表清空，重新构造列表
       tickets.value=[];
       passengerChecks.value.forEach((item)=>tickets.value.push({
-        passengersId:item.id,
-        passengersType:item.type,
+        passengerId:item.id,
+        passengerType:item.type,
         seatTypeCode:seatTypes[0].code,
-        passengersName:item.name,
+        passengerName:item.name,
         passengerIdCard:item.idCard
       }))
     },{immediate:true});
@@ -123,6 +152,7 @@ export default defineComponent({
       passengerOptions,
       passengerChecks,
       tickets,
+      PASSENGER_TYPE_ARRAY,
     };
   },
 });
@@ -144,5 +174,18 @@ export default defineComponent({
 }
 .order-tickets .ant-col {
   padding: 5px 10px;
+}
+.order-tickets .order-tickets-header{
+  background-color: cornflowerblue;
+  booder:solid 1px cor cornflowerblue;
+  color: white;
+  font-size: 16px;
+  padding: 5px 0;
+}
+.order-tickets .order-tickets-row{
+  border: cornflowerblue 1px solid;
+  border-top: none;
+  vertical-align: middle;
+  line-height: 30px;
 }
 </style>
