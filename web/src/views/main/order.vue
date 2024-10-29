@@ -22,10 +22,13 @@
   <a-checkbox-group v-model:value="passengerChecks" :options="passengerOptions" />
   <br>
   选中的乘客:{{passengerChecks}}
+  <br>
+  购票列表:{{tickets}}
+  <br>
 </template>
 <script >
 
-import {defineComponent, onMounted, ref} from "vue";
+import {defineComponent, onMounted, ref, watch} from "vue";
 import axios from "axios";
 import {notification} from "ant-design-vue";
 
@@ -72,6 +75,29 @@ export default defineComponent({
     }
     console.log("本车次提供的座位:", seatTypes)
 
+    // 购票列表，用于界面显示，并传递到后端借口，用来描述：那个乘客购买什么座位的票
+    // {
+    //   passengerId:123,
+    //   passengerType:"1",
+    //   passengerName:"张三",
+    //   passengerIdcard:"123231321132",
+    //   seatTypeCode:"1"
+    // }
+
+    const tickets=ref([]);
+    // 勾选或去掉某个乘客时，在购票列表加上或去掉一张表
+    watch(()=>passengerChecks.value,(newVal,oldVal)=>{
+      console.log("勾选乘客发生变化",newVal,oldVal)
+      // 每次有变化时，把购票列表清空，重新构造列表
+      tickets.value=[];
+      passengerChecks.value.forEach((item)=>tickets.value.push({
+        passengersId:item.id,
+        passengersType:item.type,
+        seatTypeCode:seatTypes[0].code,
+        passengersName:item.name,
+        passengerIdCard:item.idCard
+      }))
+    },{immediate:true});
     const handelQueryPassenger = () => {
       axios.get("/member/passenger/query-mine").then((response) => {
         let data = response.data;
@@ -79,7 +105,7 @@ export default defineComponent({
           passengers.value = data.content;
           passengers.value.forEach((item)=>passengerOptions.value.push({
             label:item.name,
-            value:item.id
+            value:item
           }))
         } else {
           notification.error({description: data.message});
@@ -96,6 +122,7 @@ export default defineComponent({
       passengers,
       passengerOptions,
       passengerChecks,
+      tickets,
     };
   },
 });
