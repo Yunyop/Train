@@ -21,9 +21,6 @@
 
   <a-checkbox-group v-model:value="passengerChecks" :options="passengerOptions" />
   <br>
-  选中的乘客:{{passengerChecks}}
-  <br>
-  购票列表:{{tickets}}
   <div class="order-tickets">
     <a-row class="order-tickets-header" v-if="tickets.length>0">
       <a-col :span="2">乘客</a-col>
@@ -56,7 +53,8 @@
   </div>
   <a-modal v-model:visible="visible" title="请核对以下信息"
            style="=top :50px;width: 800px"
-           ok-text="确认" cancel-text="取消">
+           ok-text="确认" cancel-text="取消"
+           @ok="handleOk">
     <div class="order-tickets">
       <a-row class="order-tickets-header" v-if="tickets.length>0">
         <a-col :span="3">乘客</a-col>
@@ -83,7 +81,6 @@
         </a-col>
       </a-row>
       <br>
-      选座对象chooseatType:{{chooseSeatObj}}
       <div v-if="chooseSeatType===0" style="color: red;">
         您购买的车票不支持选座
         <div>12306规则：只有全部是一等座或全都是二等座才支持选票</div>
@@ -94,14 +91,15 @@
                   v-model:checked="chooseSeatObj[item.code+'1']" :checked-children="item.desc" :un-checked-children="item.desc"/>
         <div v-if="tickets.length>1">
           <a-switch class="choose-seat-item" v-for="item in SEAT_COL_ARRAY" :key="item.code"
-                    v-model:checked="chooseSeatObj[item.code+'w']" :checked-children="item.desc" :un-checked-children="item.desc"/>
+                    v-model:checked="chooseSeatObj[item.code+'2']" :checked-children="item.desc" :un-checked-children="item.desc"/>
         </div>
         <div style="color: #999999">提示：您可以选择{{tickets.length}}个座位
         </div>
       </div>
       <br>
-      座位类型SEAT_COL_ARRAY:{{SEAT_COL_ARRAY}}
+      最终购票：{{tickets}}
       <br>
+      最终选座：{{chooseSeatObj}}
     </div>
   </a-modal>
   <br>
@@ -161,7 +159,8 @@ export default defineComponent({
     //   passengerType:"1",
     //   passengerName:"张三",
     //   passengerIdcard:"123231321132",
-    //   seatTypeCode:"1"
+    //   seatTypeCode:"1",
+    //   seat:"C1"
     // }
 
     const tickets=ref([]);
@@ -194,6 +193,7 @@ export default defineComponent({
     // }
     const chooseSeatObj=ref({});
     watch(()=>SEAT_COL_ARRAY.value,()=>{
+      chooseSeatObj.value={};
       for (let i=1;i<=2;i++){
         SEAT_COL_ARRAY.value.forEach((item)=>{
           chooseSeatObj.value[item.code+i]=false;
@@ -273,12 +273,55 @@ export default defineComponent({
           console.log("不是一等座或二等座，不支持选座");
           chooseSeatType.value=0;
         }
+      //   余票小于20张时，不允许选座，否则选座成功率不高，影响出票
+        if (chooseSeatType.value!==0){
+          for (let i = 0; i < seatTypes.length; i++) {
+            let seatType = seatTypes[i];
+          //   找到同类型座位
+            if (ticketSeatTypeCodesSet[0]===seatType.code){
+            //   判断余票，小于20张就不支持选座
+              if (seatType.count<20){
+                console.log("余票小于20张就不支持选座")
+                chooseSeatType.value=0;
+                break;
+              }
+            }
+          }
+        }
       }
 
 
       // 弹出确认界面
       visible.value=true;
     }
+
+    const handleOk=()=>{
+      console.log("选好的座位",chooseSeatObj.value);
+
+    //   设置每张票的座位
+    //   先清空购票列表的座位，有可能之前选了并设置座位了，但座数不对被拦截了，又重新选一遍
+      for (let i = 0; i < tickets.value.length; i++) {
+        tickets.value[i].seat=null;
+      }
+      let i=-1;
+      // 要么不选座，要么所选座位应该等于购票数，既i===(tickets.value.length-1)
+      for (let key in chooseSeatObj.value){
+        if (chooseSeatObj.value[key]){
+          i++;
+          if (i>tickets.value.length-1){
+            notification.error({description:'所选座位大于购票数'});
+            return;
+          }
+          tickets.value[i].seat=key;
+        }
+      }
+      if (i>-1&&i<tickets.value.length-1){
+        notification.error({description:'所选座位小于购票数'});
+        return ;
+      }
+      console.log("最终购票：",tickets.value)
+    }
+
 
     onMounted(() => {
       handelQueryPassenger();
@@ -297,6 +340,7 @@ export default defineComponent({
       chooseSeatType,
       chooseSeatObj,
       SEAT_COL_ARRAY,
+      handleOk,
     };
   },
 });
