@@ -1,10 +1,7 @@
 package com.yun.train.genMoudle;
 
 import cn.hutool.core.util.StrUtil;
-import com.yun.train.enums.PassengerTypeEnum;
-import com.yun.train.enums.SeatColEnum;
-import com.yun.train.enums.SeatTypeEnum;
-import com.yun.train.enums.TrainTypeEnum;
+import com.yun.train.enums.*;
 
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
@@ -17,9 +14,9 @@ import java.util.List;
 
 public class EnumGenerator {
 //    会员端生成器使用
-     static String path = "web/src/assets/js/enums.js";
+//     static String path = "web/src/assets/js/enums.js";
 //    管理端生成器使用
-//    static String path = "admin/src/assets/js/enums.js";
+    static String path = "admin/src/assets/js/enums.js";
 
     public static void main(String[] args) {
         StringBuffer bufferObject = new StringBuffer();
@@ -30,6 +27,7 @@ public class EnumGenerator {
             toJson(TrainTypeEnum.class, bufferObject, bufferArray);
             toJson(SeatTypeEnum.class, bufferObject, bufferArray);
             toJson(SeatColEnum.class, bufferObject, bufferArray);
+            toJson(ConfirmOrderStatusEnum.class, bufferObject, bufferArray);
 
 
             StringBuffer buffer = bufferObject.append("\r\n").append(bufferArray);
