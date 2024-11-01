@@ -1,8 +1,7 @@
 package com.yun.train.controller.admin;
 
-import com.yun.train.context.LoginMemberContext;
 import com.yun.train.req.ConfirmOrderQueryReq;
-import com.yun.train.req.ConfirmOrderSaveReq;
+import com.yun.train.req.ConfirmOrderDoReq;
 import com.yun.train.resp.CommonResp;
 import com.yun.train.resp.PageResp;
 import com.yun.train.resp.ConfirmOrderQueryResp;
@@ -18,7 +17,7 @@ public class ConfirmOrderAdminController {
     private ConfirmOrderService confirmOrderService;
 
     @PostMapping("/save")
-    public CommonResp<Object> save(@Valid @RequestBody ConfirmOrderSaveReq req) {
+    public CommonResp<Object> save(@Valid @RequestBody ConfirmOrderDoReq req) {
         confirmOrderService.save(req);
         return new CommonResp<>();
     }
