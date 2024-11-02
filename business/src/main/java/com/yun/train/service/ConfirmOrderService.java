@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import com.yun.train.context.LoginMemberContext;
 import com.yun.train.domain.ConfirmOrder;
 import com.yun.train.domain.ConfirmOrderExample;
+import com.yun.train.domain.DailyTrainTicket;
 import com.yun.train.enums.ConfirmOrderStatusEnum;
 import com.yun.train.mapper.ConfirmOrderMapper;
 import com.yun.train.req.ConfirmOrderQueryReq;
@@ -32,6 +33,9 @@ public class ConfirmOrderService {
 
     @Resource
     private ConfirmOrderMapper confirmOrderMapper;
+
+    @Resource
+    private DailyTrainTicketService dailyTrainTicketService;
     public void save(ConfirmOrderDoReq req) {
         DateTime now = DateTime.now();
         ConfirmOrder confirmOrder = BeanUtil.copyProperties(req, ConfirmOrder.class);
@@ -98,6 +102,9 @@ public class ConfirmOrderService {
         confirmOrderMapper.insert(confirmOrder);
 
 //        查出余票记录，需要得到真实库存
+        DailyTrainTicket dailyTrainTicket = dailyTrainTicketService.selectByUnique(date, trainCode, start, end);
+        LOGGER.info("查出余票记录:{}",dailyTrainTicket);
+
     }
 
 }

@@ -156,7 +156,22 @@ public class DailyTrainTicketService {
 
     }
 
-    private @NotNull trainTicket gettrainTicket(DailyTrain dailyTrain, Date date, String trainCode, BigDecimal sumKM) {
+    public DailyTrainTicket selectByUnique(Date date,String trainCode, String start, String end) {
+        DailyTrainTicketExample dailyTrainTicketExample = new DailyTrainTicketExample();
+        dailyTrainTicketExample.createCriteria()
+                .andDateEqualTo(date)
+                .andTrainCodeEqualTo(trainCode)
+                .andStartEqualTo(start)
+                .andEndEqualTo(end);
+        List<DailyTrainTicket> dailyTrainTicket = dailyTrainTicketMapper.selectByExample(dailyTrainTicketExample);
+        if (CollUtil.isNotEmpty(dailyTrainTicket)){
+            return dailyTrainTicket.get(0);
+        }else {
+            return null;
+        }
+    }
+
+    private  trainTicket gettrainTicket(DailyTrain dailyTrain, Date date, String trainCode, BigDecimal sumKM) {
         int ydz = dailyTrainSeatService.countSeat(date, trainCode, SeatTypeEnum.YDZ.getCode());
         int edz = dailyTrainSeatService.countSeat(date, trainCode, SeatTypeEnum.EDZ.getCode());
         int rw = dailyTrainSeatService.countSeat(date, trainCode, SeatTypeEnum.RW.getCode());
@@ -169,8 +184,7 @@ public class DailyTrainTicketService {
         BigDecimal edzPrice = sumKM.multiply(SeatTypeEnum.EDZ.getPrice()).multiply(priceRate).setScale(2, RoundingMode.HALF_UP);
         BigDecimal rwPrice = sumKM.multiply(SeatTypeEnum.RW.getPrice()).multiply(priceRate).setScale(2, RoundingMode.HALF_UP);
         BigDecimal ywPrice = sumKM.multiply(SeatTypeEnum.YW.getPrice()).multiply(priceRate).setScale(2, RoundingMode.HALF_UP);
-        trainTicket ticketCount = new trainTicket(ydz, edz, rw, yw, ydzPrice, edzPrice, rwPrice, ywPrice);
-        return ticketCount;
+        return new trainTicket(ydz, edz, rw, yw, ydzPrice, edzPrice, rwPrice, ywPrice);
     }
 
     private record trainTicket(int ydz, int edz, int rw, int yw, BigDecimal ydzPrice, BigDecimal edzPrice, BigDecimal rwPrice, BigDecimal ywPrice) {
