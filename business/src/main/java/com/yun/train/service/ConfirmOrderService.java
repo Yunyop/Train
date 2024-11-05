@@ -36,6 +36,7 @@ public class ConfirmOrderService {
 
     @Resource
     private DailyTrainTicketService dailyTrainTicketService;
+
     public void save(ConfirmOrderDoReq req) {
         DateTime now = DateTime.now();
         ConfirmOrder confirmOrder = BeanUtil.copyProperties(req, ConfirmOrder.class);
@@ -80,7 +81,7 @@ public class ConfirmOrderService {
     public void doConfirm(ConfirmOrderDoReq req) {
 //        省略业务数据校验
 
-        Date date = new Date();
+        Date date = req.getDate();
         String trainCode = req.getTrainCode();
         String start = req.getStart();
         String end = req.getEnd();
@@ -102,7 +103,7 @@ public class ConfirmOrderService {
         confirmOrderMapper.insert(confirmOrder);
 
 //        查出余票记录，需要得到真实库存
-        DailyTrainTicket dailyTrainTicket = dailyTrainTicketService.selectByUnique(date, trainCode, start, end);
+        DailyTrainTicket dailyTrainTicket = dailyTrainTicketService.selectByUnique(date,trainCode,start,end);
         LOGGER.info("查出余票记录:{}",dailyTrainTicket);
 
     }

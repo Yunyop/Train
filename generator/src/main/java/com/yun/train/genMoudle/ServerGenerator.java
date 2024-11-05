@@ -75,7 +75,7 @@ public class ServerGenerator {
 
         genModule(Domain, param, "service", "service");
 //        会员端使用
-        genModule(Domain, param, "controller/web", "controller");
+//        genModule(Domain, param, "controller/web", "controller");
 //        控台端使用
         genModule(Domain, param, "controller/admin", "adminController");
 
