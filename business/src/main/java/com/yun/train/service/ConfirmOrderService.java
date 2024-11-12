@@ -50,6 +50,8 @@ public class ConfirmOrderService {
 
     @Resource
     private DailyTrainSeatService dailyTrainSeatService;
+    @Resource
+    private AfterConfirmOrderService afterConfirmOrderService;
 
     public void save(ConfirmOrderDoReq req) {
         DateTime now = DateTime.now();
@@ -190,6 +192,11 @@ public class ConfirmOrderService {
         }
         LOGGER.info("最终购票:{}",finalSeatList);
 
+//        选中座位后事务处理
+//            座位表修改余票sell
+//            为会员增加购票记录
+//            更新确认订单为成功
+        afterConfirmOrderService.afterDoConfirm(finalSeatList);
     }
 
     /**
