@@ -196,7 +196,7 @@ public class ConfirmOrderService {
 //            座位表修改余票sell
 //            为会员增加购票记录
 //            更新确认订单为成功
-        afterConfirmOrderService.afterDoConfirm(finalSeatList);
+        afterConfirmOrderService.afterDoConfirm(dailyTrainTicket,finalSeatList);
     }
 
     /**
@@ -333,6 +333,7 @@ public class ConfirmOrderService {
                     , dailyTrainSeat.getCarriageSeatIndex(), sell, startIndex, endIndex, curSell, newSell);
             dailyTrainSeat.setSell(newSell);
             return true;
+
         }
     }
 
