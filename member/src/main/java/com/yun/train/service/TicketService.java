@@ -28,18 +28,13 @@ public class TicketService {
 
     @Resource
     private TicketMapper ticketMapper;
-    public void save(TicketSaveReq req) {
+    public void save(MemberTicketReq req) throws Exception{
         DateTime now = DateTime.now();
         Ticket ticket = BeanUtil.copyProperties(req, Ticket.class);
-        if (ObjectUtil.isNull(ticket.getId())) {
             ticket.setId(SnowUtil.getSnowflakeNextId());
             ticket.setCreateTime(now);
             ticket.setUpdateTime(now);
             ticketMapper.insert(ticket);
-        } else {
-            ticket.setUpdateTime(now);
-            ticketMapper.updateByPrimaryKey(ticket);
-        }
     }
     public PageResp<TicketQueryResp> queryList(TicketQueryReq req){
         TicketExample ticketExample = new TicketExample();
