@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import com.yun.train.domain.Ticket;
 import com.yun.train.domain.TicketExample;
 import com.yun.train.mapper.TicketMapper;
+import com.yun.train.req.MemberTicketReq;
 import com.yun.train.req.TicketQueryReq;
 import com.yun.train.req.TicketSaveReq;
 import com.yun.train.resp.PageResp;
@@ -36,6 +37,7 @@ public class TicketService {
             ticket.setUpdateTime(now);
             ticketMapper.insert(ticket);
     }
+
     public PageResp<TicketQueryResp> queryList(TicketQueryReq req){
         TicketExample ticketExample = new TicketExample();
         ticketExample.setOrderByClause("id desc");
