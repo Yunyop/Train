@@ -50,13 +50,13 @@ public class TicketSaveReq {
     private Integer carriageIndex;
 
     /**
-     * 排号|01,02
+     * 排号|01, 02
      */
     @NotBlank(message = "【排号】不能为空")
     private String row;
 
     /**
-     * 列号|枚举[SeatEnum]
+     * 列号|枚举[SeatColEnum]
      */
     @NotBlank(message = "【列号】不能为空")
     private String col;
@@ -88,7 +88,7 @@ public class TicketSaveReq {
     private Date endTime;
 
     /**
-     * 座位类型|枚举[SeatEnum]
+     * 座位类型|枚举[SeatTypeEnum]
      */
     @NotBlank(message = "【座位类型】不能为空")
     private String seatType;

@@ -47,12 +47,12 @@ public class TicketQueryResp {
     private Integer carriageIndex;
 
     /**
-     * 排号|01,02
+     * 排号|01, 02
      */
     private String row;
 
     /**
-     * 列号|枚举[SeatEnum]
+     * 列号|枚举[SeatColEnum]
      */
     private String col;
 
@@ -79,7 +79,7 @@ public class TicketQueryResp {
     private Date endTime;
 
     /**
-     * 座位类型|枚举[SeatEnum]
+     * 座位类型|枚举[SeatTypeEnum]
      */
     private String seatType;
 

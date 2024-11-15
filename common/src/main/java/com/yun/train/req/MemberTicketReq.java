@@ -31,7 +31,7 @@ public class MemberTicketReq {
      */
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     @NotNull(message = "【日期】不能为空")
-    private Date trainDate;
+    private Date date;
 
     /**
      * 车次编号
@@ -49,19 +49,19 @@ public class MemberTicketReq {
      * 排号|01, 02
      */
     @NotBlank(message = "【排号】不能为空")
-    private String seatRow;
+    private String row;
 
     /**
      * 列号|枚举[SeatColumnEnum]
      */
     @NotBlank(message = "【列号】不能为空")
-    private String seatCol;
+    private String col;
 
     /**
      * 出发站
      */
     @NotBlank(message = "【出发站】不能为空")
-    private String startStation;
+    private String start;
 
     /**
      * 出发时间
@@ -74,7 +74,7 @@ public class MemberTicketReq {
      * 到达站
      */
     @NotBlank(message = "【到达站】不能为空")
-    private String endStation;
+    private String end;
 
     /**
      * 到站时间
@@ -89,127 +89,128 @@ public class MemberTicketReq {
     @NotBlank(message = "【座位类型】不能为空")
     private String seatType;
 
-    public Long getMemberId() {
+    public @NotNull(message = "【会员id】不能为空") Long getMemberId() {
         return memberId;
     }
 
-    public void setMemberId(Long memberId) {
+    public void setMemberId(@NotNull(message = "【会员id】不能为空") Long memberId) {
         this.memberId = memberId;
     }
 
-    public Long getPassengerId() {
+    public @NotNull(message = "【乘客id】不能为空") Long getPassengerId() {
         return passengerId;
     }
 
-    public void setPassengerId(Long passengerId) {
+    public void setPassengerId(@NotNull(message = "【乘客id】不能为空") Long passengerId) {
         this.passengerId = passengerId;
     }
 
-    public String getPassengerName() {
+    public @NotNull(message = "【乘客名字】不能为空") String getPassengerName() {
         return passengerName;
     }
 
-    public void setPassengerName(String passengerName) {
+    public void setPassengerName(@NotNull(message = "【乘客名字】不能为空") String passengerName) {
         this.passengerName = passengerName;
     }
 
-    public Date getTrainDate() {
-        return trainDate;
+    public @NotNull(message = "【日期】不能为空") Date getDate() {
+        return date;
     }
 
-    public void setTrainDate(Date trainDate) {
-        this.trainDate = trainDate;
+    public void setDate(@NotNull(message = "【日期】不能为空") Date date) {
+        this.date = date;
     }
 
-    public String getTrainCode() {
+    public @NotBlank(message = "【车次编号】不能为空") String getTrainCode() {
         return trainCode;
     }
 
-    public void setTrainCode(String trainCode) {
+    public void setTrainCode(@NotBlank(message = "【车次编号】不能为空") String trainCode) {
         this.trainCode = trainCode;
     }
 
-    public Integer getCarriageIndex() {
+    public @NotNull(message = "【箱序】不能为空") Integer getCarriageIndex() {
         return carriageIndex;
     }
 
-    public void setCarriageIndex(Integer carriageIndex) {
+    public void setCarriageIndex(@NotNull(message = "【箱序】不能为空") Integer carriageIndex) {
         this.carriageIndex = carriageIndex;
     }
 
-    public String getSeatRow() {
-        return seatRow;
+    public @NotBlank(message = "【排号】不能为空") String getRow() {
+        return row;
     }
 
-    public void setSeatRow(String seatRow) {
-        this.seatRow = seatRow;
+    public void setRow(@NotBlank(message = "【排号】不能为空") String row) {
+        this.row = row;
     }
 
-    public String getSeatCol() {
-        return seatCol;
+    public @NotBlank(message = "【列号】不能为空") String getCol() {
+        return col;
     }
 
-    public void setSeatCol(String seatCol) {
-        this.seatCol = seatCol;
+    public void setCol(@NotBlank(message = "【列号】不能为空") String col) {
+        this.col = col;
     }
 
-    public String getStartStation() {
-        return startStation;
+    public @NotBlank(message = "【出发站】不能为空") String getStart() {
+        return start;
     }
 
-    public void setStartStation(String startStation) {
-        this.startStation = startStation;
+    public void setStart(@NotBlank(message = "【出发站】不能为空") String start) {
+        this.start = start;
     }
 
-    public String getEndStation() {
-        return endStation;
-    }
-
-    public void setEndStation(String endStation) {
-        this.endStation = endStation;
-    }
-
-    public Date getStartTime() {
+    public @NotNull(message = "【出发时间】不能为空") Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(@NotNull(message = "【出发时间】不能为空") Date startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public @NotBlank(message = "【到达站】不能为空") String getEnd() {
+        return end;
+    }
+
+    public void setEnd(@NotBlank(message = "【到达站】不能为空") String end) {
+        this.end = end;
+    }
+
+    public @NotNull(message = "【到站时间】不能为空") Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(@NotNull(message = "【到站时间】不能为空") Date endTime) {
         this.endTime = endTime;
     }
 
-    public String getSeatType() {
+    public @NotBlank(message = "【座位类型】不能为空") String getSeatType() {
         return seatType;
     }
 
-    public void setSeatType(String seatType) {
+    public void setSeatType(@NotBlank(message = "【座位类型】不能为空") String seatType) {
         this.seatType = seatType;
     }
 
     @Override
     public String toString() {
-        return "MemberTicketReq{" +
-                "memberId=" + memberId +
-                ", passengerId=" + passengerId +
-                ", passengerName=" + passengerName +
-                ", date=" + trainDate +
-                ", trainCode='" + trainCode + '\'' +
-                ", carriageIndex=" + carriageIndex +
-                ", row='" + seatRow + '\'' +
-                ", col='" + seatCol + '\'' +
-                ", start='" + startStation + '\'' +
-                ", startTime=" + startTime +
-                ", end='" + endStation + '\'' +
-                ", endTime=" + endTime +
-                ", seatType='" + seatType + '\'' +
-                '}';
+        final StringBuffer sb = new StringBuffer("MemberTicketReq{");
+        sb.append("memberId=").append(memberId);
+        sb.append(", passengerId=").append(passengerId);
+        sb.append(", passengerName='").append(passengerName).append('\'');
+        sb.append(", date=").append(date);
+        sb.append(", trainCode='").append(trainCode).append('\'');
+        sb.append(", carriageIndex=").append(carriageIndex);
+        sb.append(", row='").append(row).append('\'');
+        sb.append(", col='").append(col).append('\'');
+        sb.append(", start='").append(start).append('\'');
+        sb.append(", startTime=").append(startTime);
+        sb.append(", end='").append(end).append('\'');
+        sb.append(", endTime=").append(endTime);
+        sb.append(", seatType='").append(seatType).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }
 

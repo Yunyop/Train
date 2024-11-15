@@ -2,7 +2,6 @@ package com.yun.train.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
-import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yun.train.domain.Ticket;
@@ -10,11 +9,11 @@ import com.yun.train.domain.TicketExample;
 import com.yun.train.mapper.TicketMapper;
 import com.yun.train.req.MemberTicketReq;
 import com.yun.train.req.TicketQueryReq;
-import com.yun.train.req.TicketSaveReq;
 import com.yun.train.resp.PageResp;
 import com.yun.train.resp.TicketQueryResp;
 import com.yun.train.util.SnowUtil;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ public class TicketService {
 
     @Resource
     private TicketMapper ticketMapper;
-    public void save(MemberTicketReq req) throws Exception{
+    public void save(@Valid MemberTicketReq req) {
         DateTime now = DateTime.now();
         Ticket ticket = BeanUtil.copyProperties(req, Ticket.class);
             ticket.setId(SnowUtil.getSnowflakeNextId());
@@ -37,7 +36,6 @@ public class TicketService {
             ticket.setUpdateTime(now);
             ticketMapper.insert(ticket);
     }
-
     public PageResp<TicketQueryResp> queryList(TicketQueryReq req){
         TicketExample ticketExample = new TicketExample();
         ticketExample.setOrderByClause("id desc");

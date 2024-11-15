@@ -14,14 +14,14 @@
       <template v-if="column.dataIndex === 'operation'">
       </template>
       <template v-else-if="column.dataIndex === 'col'">
-        <span v-for="item in SEAT_ARRAY" :key="item.code">
+        <span v-for="item in SEAT_COL_ARRAY" :key="item.code">
           <span v-if="item.code === record.col">
             {{item.desc}}
           </span>
         </span>
       </template>
       <template v-else-if="column.dataIndex === 'seatType'">
-        <span v-for="item in SEAT_ARRAY" :key="item.code">
+        <span v-for="item in SEAT_TYPE_ARRAY" :key="item.code">
           <span v-if="item.code === record.seatType">
             {{item.desc}}
           </span>
@@ -39,7 +39,8 @@ import axios from "axios";
 export default defineComponent({
   name: "ticket-view",
   setup() {
-    const SEAT_ARRAY = window.SEAT_ARRAY;
+    const SEAT_COL_ARRAY = window.SEAT_COL_ARRAY;
+    const SEAT_TYPE_ARRAY = window.SEAT_TYPE_ARRAY;
     const visible = ref(false);
     let ticket = ref({
       id: undefined,
@@ -180,7 +181,8 @@ export default defineComponent({
     });
 
     return {
-      SEAT_ARRAY,
+      SEAT_COL_ARRAY,
+      SEAT_TYPE_ARRAY,
       ticket,
       visible,
       tickets,
