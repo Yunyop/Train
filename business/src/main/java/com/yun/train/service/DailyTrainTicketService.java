@@ -22,6 +22,8 @@ import jakarta.annotation.Resource;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,25 +41,12 @@ public class DailyTrainTicketService {
     @Resource
     private DailyTrainTicketMapper dailyTrainTicketMapper;
 
-    @Resource
-    private TrainStationService trainStationService;
-
-    @Resource
-    private DailyTrainSeatService dailyTrainSeatService;
-
-    public void save(DailyTrainTicketSaveReq req) {
-        DateTime now = DateTime.now();
-        DailyTrainTicket dailyTrainTicket = BeanUtil.copyProperties(req, DailyTrainTicket.class);
-        if (ObjectUtil.isNull(dailyTrainTicket.getId())) {
-            dailyTrainTicket.setId(SnowUtil.getSnowflakeNextId());
-            dailyTrainTicket.setCreateTime(now);
-            dailyTrainTicket.setUpdateTime(now);
-            dailyTrainTicketMapper.insert(dailyTrainTicket);
-        } else {
-            dailyTrainTicket.setUpdateTime(now);
-            dailyTrainTicketMapper.updateByPrimaryKey(dailyTrainTicket);
-        }
+    @CachePut(value = "DailyTrainTicketService.queryList")
+    public PageResp<DailyTrainTicketQueryResp>queryList2(DailyTrainTicketQueryReq req) {
+        return queryList(req);
     }
+
+    @Cacheable(value = "DailyTrainTicketService.queryList")
     public PageResp<DailyTrainTicketQueryResp> queryList(DailyTrainTicketQueryReq req){
         DailyTrainTicketExample dailyTrainTicketExample = new DailyTrainTicketExample();
         dailyTrainTicketExample.setOrderByClause("id desc");
@@ -91,6 +80,26 @@ public class DailyTrainTicketService {
 
         pageResp.setTotal(pageInfo.getTotal());
         return pageResp;
+    }
+
+    @Resource
+    private TrainStationService trainStationService;
+
+    @Resource
+    private DailyTrainSeatService dailyTrainSeatService;
+
+    public void save(DailyTrainTicketSaveReq req) {
+        DateTime now = DateTime.now();
+        DailyTrainTicket dailyTrainTicket = BeanUtil.copyProperties(req, DailyTrainTicket.class);
+        if (ObjectUtil.isNull(dailyTrainTicket.getId())) {
+            dailyTrainTicket.setId(SnowUtil.getSnowflakeNextId());
+            dailyTrainTicket.setCreateTime(now);
+            dailyTrainTicket.setUpdateTime(now);
+            dailyTrainTicketMapper.insert(dailyTrainTicket);
+        } else {
+            dailyTrainTicket.setUpdateTime(now);
+            dailyTrainTicketMapper.updateByPrimaryKey(dailyTrainTicket);
+        }
     }
     public void delete(long id) {
         dailyTrainTicketMapper.deleteByPrimaryKey(id);
