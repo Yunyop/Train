@@ -41,6 +41,12 @@ public class DailyTrainTicketService {
     @Resource
     private DailyTrainTicketMapper dailyTrainTicketMapper;
 
+    @Cacheable(value = "DailyTrainTicketService.queryList")
+    public PageResp<DailyTrainTicketQueryResp>queryList3(DailyTrainTicketQueryReq req) {
+        LOGGER.info("测试缓存击穿");
+        return null;
+    }
+
     @CachePut(value = "DailyTrainTicketService.queryList")
     public PageResp<DailyTrainTicketQueryResp>queryList2(DailyTrainTicketQueryReq req) {
         return queryList(req);
