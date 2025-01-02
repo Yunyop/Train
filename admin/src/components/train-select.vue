@@ -12,7 +12,6 @@
 </template>
 <script>
 import {onMounted, ref, watch,defineComponent} from "vue";
-import {notification} from "ant-design-vue";
 import axios from "axios";
 
 export default defineComponent({
@@ -34,14 +33,20 @@ export default defineComponent({
 
     // 查询所有车次，用于车次下拉框
     const queryAllTrain=()=>{
-      axios.get("/business/admin/train/query-all").then((response)=>{
-        let data=response.data;
-        if (data.success){
-          trains.value=data.content;
-        }else {
-          notification.error({description:data.message})
-        }
-      });
+      let list=SessionStorage.get(SESSION_ALL_TRAIN);
+      if (Tool.isNotEmpty(list)){
+        console.log("queryAllTrain 读取缓存")
+        trains.value = list;
+      }else {
+        axios.get("business/admin/train/query-all").then((response)=>{
+          let data=response.data;
+          if (data.success){
+            trains.value=data.content;
+            console.log("queryAllTrain 保存缓存");
+            SessionStorage.set(SESSION_ALL_TRAIN,trains.value)
+          }
+        });
+      }
     };
 
     // 车次下拉框筛选
