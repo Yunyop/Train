@@ -19,7 +19,6 @@ import com.yun.train.resp.PageResp;
 import com.yun.train.resp.DailyTrainTicketQueryResp;
 import com.yun.train.util.SnowUtil;
 import jakarta.annotation.Resource;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CachePut;
