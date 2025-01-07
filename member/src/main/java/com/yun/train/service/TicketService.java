@@ -13,6 +13,7 @@ import com.yun.train.req.TicketQueryReq;
 import com.yun.train.resp.PageResp;
 import com.yun.train.resp.TicketQueryResp;
 import com.yun.train.util.SnowUtil;
+import io.seata.core.context.RootContext;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -29,13 +30,18 @@ public class TicketService {
 
     @Resource
     private TicketMapper ticketMapper;
-    public void save(@Valid MemberTicketReq req) {
+    public void save(@Valid MemberTicketReq req) throws Exception {
+        LOGGER.info("seata全局事务ID save:{}", RootContext.getXID());
         DateTime now = DateTime.now();
         Ticket ticket = BeanUtil.copyProperties(req, Ticket.class);
             ticket.setId(SnowUtil.getSnowflakeNextId());
             ticket.setCreateTime(now);
             ticket.setUpdateTime(now);
             ticketMapper.insert(ticket);
+//            模拟被调用方出现异常
+        if (1==1){
+            throw new Exception("测试异常11");
+        }
     }
     public PageResp<TicketQueryResp> queryList(TicketQueryReq req){
         TicketExample ticketExample = new TicketExample();
