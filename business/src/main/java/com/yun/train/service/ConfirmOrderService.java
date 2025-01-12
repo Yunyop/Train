@@ -27,11 +27,16 @@ import com.yun.train.util.SnowUtil;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.stringtemplate.v4.ST;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ConfirmOrderService {
@@ -53,7 +58,12 @@ public class ConfirmOrderService {
     @Resource
     private AfterConfirmOrderService afterConfirmOrderService;
 
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+
     public void save(ConfirmOrderDoReq req) {
+
         DateTime now = DateTime.now();
         ConfirmOrder confirmOrder = BeanUtil.copyProperties(req, ConfirmOrder.class);
         if (ObjectUtil.isNull(confirmOrder.getId())) {
@@ -95,7 +105,18 @@ public class ConfirmOrderService {
 
 
     public void doConfirm(ConfirmOrderDoReq req) {
-//        省略业务数据校验
+
+        String lockkey=req.getDate()+"-"+req.getTrainCode();
+        Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockkey, lockkey, 5, TimeUnit.SECONDS);
+        if(setIfAbsent){
+            LOGGER.info("恭喜抢到锁了");
+        }else {
+//            只是没抢到锁，不知道票卖完没有
+            LOGGER.info("很遗憾没抢到锁");
+            throw
+                    new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_LOCK_FAIL);
+        }
+        //        省略业务数据校验
 
         Date date = req.getDate();
         String trainCode = req.getTrainCode();
