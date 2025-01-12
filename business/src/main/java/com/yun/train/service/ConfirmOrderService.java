@@ -3,6 +3,7 @@ package com.yun.train.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -106,8 +107,8 @@ public class ConfirmOrderService {
 
     public void doConfirm(ConfirmOrderDoReq req) {
 
-        String lockkey=req.getDate()+"-"+req.getTrainCode();
-        Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockkey, lockkey, 5, TimeUnit.SECONDS);
+        String lockKey= DateUtil.formatDate(req.getDate())+"-"+req.getTrainCode();
+        Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockKey, lockKey, 60, TimeUnit.SECONDS);
         if(setIfAbsent){
             LOGGER.info("恭喜抢到锁了");
         }else {
@@ -223,6 +224,8 @@ public class ConfirmOrderService {
             LOGGER.info("保存购票信息失败",e);
             throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_EXCEPTION);
         }
+        LOGGER.info("购票流程结束，释放锁!");
+        redisTemplate.delete(lockKey);
     }
 
     /**

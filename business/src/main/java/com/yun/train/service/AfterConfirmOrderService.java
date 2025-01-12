@@ -67,7 +67,7 @@ public class AfterConfirmOrderService {
      *  更新确认订单为成功
      */
 //    @Transactional
-    @GlobalTransactional
+//    @GlobalTransactional
     public void afterDoConfirm(DailyTrainTicket dailyTrainTicket,List<DailyTrainSeat> finalSeatList,List<ConfirmOrderTicketReq> tickets,ConfirmOrder confirmOrder) throws Exception{
         LOGGER.info("seata全局事务ID save:{}", RootContext.getXID());
         for (int j = 0; j < finalSeatList.size(); j++) {
