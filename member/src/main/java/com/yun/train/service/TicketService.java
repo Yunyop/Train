@@ -13,7 +13,7 @@ import com.yun.train.req.TicketQueryReq;
 import com.yun.train.resp.PageResp;
 import com.yun.train.resp.TicketQueryResp;
 import com.yun.train.util.SnowUtil;
-import io.seata.core.context.RootContext;
+//import io.seata.core.context.RootContext;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ public class TicketService {
     @Resource
     private TicketMapper ticketMapper;
     public void save(@Valid MemberTicketReq req) throws Exception {
-        LOGGER.info("seata全局事务ID save:{}", RootContext.getXID());
+//        LOGGER.info("seata全局事务ID save:{}", RootContext.getXID());
         DateTime now = DateTime.now();
         Ticket ticket = BeanUtil.copyProperties(req, Ticket.class);
             ticket.setId(SnowUtil.getSnowflakeNextId());

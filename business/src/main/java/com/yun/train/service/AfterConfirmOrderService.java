@@ -29,8 +29,8 @@ import com.yun.train.resp.CommonResp;
 import com.yun.train.resp.ConfirmOrderQueryResp;
 import com.yun.train.resp.PageResp;
 import com.yun.train.util.SnowUtil;
-import io.seata.core.context.RootContext;
-import io.seata.spring.annotation.GlobalTransactional;
+//import io.seata.core.context.RootContext;
+//import io.seata.spring.annotation.GlobalTransactional;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +69,7 @@ public class AfterConfirmOrderService {
 //    @Transactional
 //    @GlobalTransactional
     public void afterDoConfirm(DailyTrainTicket dailyTrainTicket,List<DailyTrainSeat> finalSeatList,List<ConfirmOrderTicketReq> tickets,ConfirmOrder confirmOrder) throws Exception{
-        LOGGER.info("seata全局事务ID save:{}", RootContext.getXID());
+//        LOGGER.info("seata全局事务ID save:{}", RootContext.getXID());
         for (int j = 0; j < finalSeatList.size(); j++) {
             DailyTrainSeat dailyTrainSeat = finalSeatList.get(j);
             DailyTrainSeat seatForUpdate = new DailyTrainSeat();
