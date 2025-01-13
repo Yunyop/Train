@@ -5,6 +5,8 @@
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="用户定义的变量">
         <collectionProp name="Arguments.arguments"/>
       </elementProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
     </TestPlan>
     <hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="会员登陆">
@@ -18,7 +20,7 @@
         </elementProp>
       </ThreadGroup>
       <hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="会员登陆">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="会员登陆" enabled="true">
           <stringProp name="HTTPSampler.domain">127.0.0.1</stringProp>
           <stringProp name="HTTPSampler.port">8000</stringProp>
           <stringProp name="HTTPSampler.path">/member/member/login</stringProp>
@@ -40,7 +42,7 @@
           </elementProp>
         </HTTPSamplerProxy>
         <hashTree>
-          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP信息头管理器">
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP信息头管理器" enabled="true">
             <collectionProp name="HeaderManager.headers">
               <elementProp name="Content-Type" elementType="Header">
                 <stringProp name="Header.name">Content-Type</stringProp>
@@ -49,7 +51,7 @@
             </collectionProp>
           </HeaderManager>
           <hashTree/>
-          <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="查看结果树">
+          <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="查看结果树" enabled="true">
             <boolProp name="ResultCollector.error_logging">false</boolProp>
             <objProp>
               <name>saveConfig</name>
@@ -89,7 +91,7 @@
         </hashTree>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="购票">
-        <intProp name="ThreadGroup.num_threads">100</intProp>
+        <intProp name="ThreadGroup.num_threads">10</intProp>
         <intProp name="ThreadGroup.ramp_time">1</intProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
@@ -140,7 +142,7 @@
               </elementProp>
               <elementProp name="token" elementType="Header">
                 <stringProp name="Header.name">token</stringProp>
-                <stringProp name="Header.value">eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE3MzY1ODM2MjAsIm1vYmlsZSI6IjEzMDg4MDE1NDc2IiwiaWQiOjE4MDY2MDI3NDk5OTE4NDk5ODQsImV4cCI6MTczNjY3MDAyMCwiaWF0IjoxNzM2NTgzNjIwfQ.Ie7FKrUyhdQniIdKguPLu30cdTsQCmojrh1vL7oHk0c</stringProp>
+                <stringProp name="Header.value">eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE3MzY3NDg2NTAsIm1vYmlsZSI6IjEzMDg4MDE1NDc2IiwiaWQiOjE4MDY2MDI3NDk5OTE4NDk5ODQsImV4cCI6MTczNjgzNTA1MCwiaWF0IjoxNzM2NzQ4NjUwfQ.0rvnNs0GdsslZ_nzO-BcnUHm-RU4d3lmXvRI6gmYlrY</stringProp>
               </elementProp>
             </collectionProp>
           </HeaderManager>
