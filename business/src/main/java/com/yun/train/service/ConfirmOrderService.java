@@ -265,12 +265,14 @@ public class ConfirmOrderService {
                 LOGGER.info("保存购票信息失败",e);
                 throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_EXCEPTION);
             }
-            LOGGER.info("购票流程结束，释放锁!lockKey:{}",lockKey);
-            redisTemplate.delete(lockKey);
+//            LOGGER.info("购票流程结束，释放锁!lockKey:{}",lockKey);
+//            redisTemplate.delete(lockKey);
 //        } catch (InterruptedException e) {
 //
 //            LOGGER.info("购票异常",e);
         } finally {
+            LOGGER.info("购票流程结束，释放锁!lockKey:{}",lockKey);
+            redisTemplate.delete(lockKey);
 //            if (lock != null&&lock.isHeldByCurrentThread()) {
 //                lock.unlock();
 //            }
