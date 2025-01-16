@@ -16,7 +16,7 @@ public class TestController {
     public String hello() throws InterruptedException {
 
         testService.hello2();
-        return "hello world! Business";
+        return "Hello World! Business";
     }
 
     @SentinelResource("hello1")

@@ -9,14 +9,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TestController {
-    private static final Logger log = LoggerFactory.getLogger(TestController.class);
+
+    private static final Logger LOG = LoggerFactory.getLogger(TestController.class);
+
     @Resource
     BusinessFeign businessFeign;
-    
+
     @GetMapping("/hello")
     public String hello() {
         String businessHello = businessFeign.hello();
-        log.info(businessHello);
-        return "hello world! Batch!"+businessHello;
+        LOG.info(businessHello);
+        return "Hello World! Batch! " + businessHello;
     }
 }
