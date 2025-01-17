@@ -9,6 +9,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yun.train.domain.*;
 import com.yun.train.mapper.SkTokenMapper;
+import com.yun.train.mapper.cust.SkTokenMapperCust;
 import com.yun.train.req.SkTokenQueryReq;
 import com.yun.train.req.SkTokenSaveReq;
 import com.yun.train.resp.PageResp;
@@ -33,6 +34,9 @@ public class SkTokenService {
 
     @Resource
     private DailyTrainStationService dailyTrainStationService;
+
+    @Resource
+    private SkTokenMapperCust skTokenMapperCust;
 
     /**
      * 初始化
@@ -108,5 +112,19 @@ public class SkTokenService {
     }
     public void delete(long id) {
         skTokenMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 获取令牌
+     */
+    public boolean validSkToken(Date date,String trainCode,Long memberId) {
+        LOGGER.info("会员[{}]获取日期[{}]车次[{}]的令牌开始",memberId,DateUtil.formatDate(date),trainCode);
+//        令牌约等于库存，令牌没有了，就不再卖票，不需要再进入购票主流程去判断库存，判断令牌肯定比判断库存更有效率
+        int updateCount = skTokenMapperCust.decrease(date,trainCode);
+        if (updateCount > 0) {
+            return true;
+        }else {
+            return false;
+        }
     }
 }
