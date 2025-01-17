@@ -238,3 +238,16 @@ CREATE TABLE `undo_log` (
                             PRIMARY KEY (`id`),
                             UNIQUE KEY `ux_undo_log` (`xid`,`branch_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+drop table if exists `sk_token`;
+CREATE TABLE `sk_token` (
+                            `id` bigint NOT NULL COMMENT 'id',
+                            `date` date NOT NULL COMMENT '日期',
+                            `train_code` varchar(20) NOT NULL COMMENT '车次编号',
+                            `count` int NOT NULL COMMENT '令牌余量',
+                            `create_time` datetime(3) DEFAULT NULL COMMENT '新增时间',
+                            `update_time` datetime(3) DEFAULT NULL COMMENT '修改时间',
+                            PRIMARY KEY (`id`),
+                            UNIQUE KEY `date_train_code_unique` (`date`,`train_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='秒杀令牌'
+

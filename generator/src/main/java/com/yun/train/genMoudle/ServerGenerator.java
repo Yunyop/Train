@@ -15,7 +15,7 @@ import java.util.*;
 
 public class ServerGenerator {
 
-    static boolean readOnly = true;
+    static boolean readOnly = false;
 
 //    static String vuePath = "web/src/views/main/";
     static String vuePath = "admin/src/views/main/";
@@ -24,9 +24,9 @@ public class ServerGenerator {
 
     static String pomPath = "generator/pom.xml";
     static String module = "";
-    static {
-        new File(serverPath).mkdir();
-    }
+//    static {
+//        new File(serverPath).mkdir();
+//    }
 
     public static void main(String[] args) throws Exception {
         String generatorPath = getGeneratorPath();
@@ -73,14 +73,14 @@ public class ServerGenerator {
         param.put("readOnly", readOnly);
         System.out.println("组装参数：" + param);
 
-//        genModule(Domain, param, "service", "service");
+        genModule(Domain, param, "service", "service");
 //        会员端使用
 //        genModule(Domain, param, "controller/web", "controller");
 //        控台端使用
-//        genModule(Domain, param, "controller/admin", "adminController");
+        genModule(Domain, param, "controller/admin", "adminController");
 
         genModule(Domain, param, "req", "saveReq");
-//        genModule(Domain, param, "req", "queryReq");
+        genModule(Domain, param, "req", "queryReq");
         genModule(Domain, param, "resp", "queryResp");
 
         genModuleVue(do_main, param);
