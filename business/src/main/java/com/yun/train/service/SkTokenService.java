@@ -8,6 +8,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yun.train.domain.*;
+import com.yun.train.enums.LockKeyPreEnum;
 import com.yun.train.exception.BusinessException;
 import com.yun.train.exception.BusinessExceptionEnum;
 import com.yun.train.mapper.SkTokenMapper;
@@ -126,7 +127,7 @@ public class SkTokenService {
      */
     public boolean validSkToken(Date date,String trainCode,Long memberId) {
         LOGGER.info("会员[{}]获取日期[{}]车次[{}]的令牌开始",memberId,DateUtil.formatDate(date),trainCode);
-        String lockKey= DateUtil.formatDate(date)+"-"+trainCode+"-"+memberId;
+        String lockKey = LockKeyPreEnum.CONFIRM_ORDER + "-" + DateUtil.formatDate(date)+"-"+trainCode+"-"+memberId;
         Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockKey, lockKey, 5, TimeUnit.SECONDS);
         if(Boolean.TRUE.equals(setIfAbsent)){
             LOGGER.info("恭喜抢到令牌锁了!lockKey:{}",lockKey);
