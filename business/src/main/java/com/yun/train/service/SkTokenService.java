@@ -70,10 +70,10 @@ public class SkTokenService {
             int seatCount = dailyTrainSeatService.countSeat(date,trainCode);
             LOGGER.info("车次[{}]座位数：{}",trainCode,seatCount);
 
-            long stationCount = dailyTrainStationService.countByTrainCode(trainCode);
+            long stationCount = dailyTrainStationService.countByTrainCode(date,trainCode);
             LOGGER.info("车次[{}]到站数：{}",trainCode,stationCount);
 
-            int count = (int)(seatCount*stationCount*3/4);
+            int count = (int)(seatCount*stationCount);//*3/4
             LOGGER.info("车次[{}]初次生成令牌数：{}",trainCode,count);
             skToken.setCount(count);
             skTokenMapper.insertSelective(skToken);

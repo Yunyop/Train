@@ -117,9 +117,9 @@ public class DailyTrainStationService {
      * @param trainCode
      * @return
      */
-    public long countByTrainCode(String trainCode) {
+    public long countByTrainCode(Date date,String trainCode) {
         DailyTrainStationExample dailyTrainStationExample = new DailyTrainStationExample();
-        dailyTrainStationExample.createCriteria().andTrainCodeEqualTo(trainCode);
+        dailyTrainStationExample.createCriteria().andTrainCodeEqualTo(trainCode).andDateEqualTo(date);
         long stationCount = dailyTrainStationMapper.countByExample(dailyTrainStationExample);
         return stationCount;
     }
