@@ -103,8 +103,8 @@
     </div>
   </a-modal>
   <!--      验证码-->
-  <a-modal v-model:visible="imageCodeModalVisible" :title="null" :closable="false"
-           style="top:50px;width: 400px">
+    <a-modal v-model:visible="imageCodeModalVisible" :title="null" :footer="null" :closable="false"
+             style="top: 50px; width: 400px">
     <p style="text-align: center ;font-weight: bold;font-size: 18px">使用验证码削弱瞬时高峰</p>
     <p>
       <a-input v-model:value="imageCode" placeholder="图片验证码">
@@ -344,8 +344,8 @@ export default defineComponent({
         start: dailyTrainTicket.start,
         end: dailyTrainTicket.end,
         tickets: tickets.value,
-        // imageCodeToken: imageCodeToken.value,
-        // imageCode: imageCode.value,
+        imageCodeToken: imageCodeToken.value,
+        imageCode: imageCode.value,
         // lineNumber: lineNumber.value
       }).then((response) => {
         let data = response.data;

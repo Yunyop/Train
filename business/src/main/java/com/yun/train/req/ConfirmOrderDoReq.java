@@ -54,16 +54,48 @@ public class ConfirmOrderDoReq {
     private List<ConfirmOrderTicketReq> tickets;
 
     /**
-     * 新增时间
+     * 验证码
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private Date createTime;
+    @NotBlank(message = "【图片验证码】不能为空")
+    private String imageCode;
 
     /**
-     * 修改时间
+     * 图片验证码token
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private Date updateTime;
+    @NotBlank(message = "【图片验证码】参数非法")
+    private String imageCodeToken;
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("ConfirmOrderDoReq{");
+        sb.append("memberId=").append(memberId);
+        sb.append(", date=").append(date);
+        sb.append(", trainCode='").append(trainCode).append('\'');
+        sb.append(", start='").append(start).append('\'');
+        sb.append(", end='").append(end).append('\'');
+        sb.append(", dailyTrainTicketId=").append(dailyTrainTicketId);
+        sb.append(", tickets=").append(tickets);
+        sb.append(", imageCode='").append(imageCode).append('\'');
+        sb.append(", imageCodeToken='").append(imageCodeToken).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
+
+    public String getImageCode() {
+        return imageCode;
+    }
+
+    public void setImageCode(String imageCode) {
+        this.imageCode = imageCode;
+    }
+
+    public String getImageCodeToken() {
+        return imageCodeToken;
+    }
+
+    public void setImageCodeToken(String imageCodeToken) {
+        this.imageCodeToken = imageCodeToken;
+    }
 
     public  List<ConfirmOrderTicketReq> getTickets() {
         return tickets;
@@ -121,35 +153,5 @@ public class ConfirmOrderDoReq {
         this.dailyTrainTicketId = dailyTrainTicketId;
     }
 
-     public Date getCreateTime() {
-        return createTime;
-    }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuffer sb = new StringBuffer("ConfirmOrderDoReq{");
-        sb.append("memberId=").append(memberId);
-        sb.append(", date=").append(date);
-        sb.append(", trainCode='").append(trainCode).append('\'');
-        sb.append(", start='").append(start).append('\'');
-        sb.append(", end='").append(end).append('\'');
-        sb.append(", dailyTrainTicketId=").append(dailyTrainTicketId);
-        sb.append(", tickets=").append(tickets);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", updateTime=").append(updateTime);
-        sb.append('}');
-        return sb.toString();
-    }
 }
