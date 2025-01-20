@@ -1,0 +1,2 @@
+GET http://localhost:8002/business/kaptcha/image-code/123
+Accept: application/json
