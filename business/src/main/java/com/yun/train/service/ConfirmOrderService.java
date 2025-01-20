@@ -16,7 +16,7 @@ import com.github.pagehelper.PageInfo;
 import com.yun.train.context.LoginMemberContext;
 import com.yun.train.domain.*;
 import com.yun.train.enums.ConfirmOrderStatusEnum;
-import com.yun.train.enums.LockKeyPreEnum;
+import com.yun.train.enums.RedisKeyPreEnum;
 import com.yun.train.enums.SeatColEnum;
 import com.yun.train.enums.SeatTypeEnum;
 import com.yun.train.exception.BusinessException;
@@ -36,7 +36,6 @@ import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 //import org.stringtemplate.v4.ST;
@@ -129,7 +128,7 @@ public class ConfirmOrderService {
             LOGGER.info("令牌校验不通过");
             throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_SK_TOKEN_FAIL);
         }
-        String lockKey= LockKeyPreEnum.CONFIRM_ORDER + "-" + DateUtil.formatDate(req.getDate())+"-"+req.getTrainCode();
+        String lockKey= RedisKeyPreEnum.CONFIRM_ORDER + "-" + DateUtil.formatDate(req.getDate())+"-"+req.getTrainCode();
 //        setIfabsent就是对应redis的setnx
         Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockKey, lockKey, 5, TimeUnit.SECONDS);
         if(Boolean.TRUE.equals(setIfAbsent)){
