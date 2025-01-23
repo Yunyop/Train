@@ -35,7 +35,7 @@
       </a-menu-item>
       <a-menu-item key="/my-ticket">
         <router-link to="/my-ticket">
-          <user-outlined/>&nbsp;我的车票
+          <idcard-outlined />&nbsp;我的车票
         </router-link>
       </a-menu-item>
     </a-menu>
