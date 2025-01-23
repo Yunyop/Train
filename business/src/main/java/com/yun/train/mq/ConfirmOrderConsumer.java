@@ -2,6 +2,7 @@ package com.yun.train.mq;
 
  import com.alibaba.fastjson.JSON;
  import com.yun.train.domain.ConfirmOrder;
+ import com.yun.train.dto.ConfirmOrderMQDto;
  import com.yun.train.req.ConfirmOrderDoReq;
  import com.yun.train.service.ConfirmOrderService;
  import jakarta.annotation.Resource;
@@ -26,9 +27,9 @@ package com.yun.train.mq;
      @Override
      public void onMessage(MessageExt messageExt) {
          byte[] body = messageExt.getBody();
-         ConfirmOrderDoReq confirmOrderDoReq = JSON.parseObject(new String(body), ConfirmOrderDoReq.class);
-         MDC.put("LOG_ID", confirmOrderDoReq.getLogId());
+         ConfirmOrderMQDto confirmOrderMQDto = JSON.parseObject(new String(body), ConfirmOrderMQDto.class);
+         MDC.put("LOG_ID", confirmOrderMQDto.getLogId());
          LOGGER.info("ROCKETMQ收到消息：{}", new String(body));
-         confirmOrderService.doConfirm(confirmOrderDoReq);
+         confirmOrderService.doConfirm(confirmOrderMQDto);
      }
  }
