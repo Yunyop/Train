@@ -2,12 +2,10 @@ package com.yun.train.controller.web;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
-import com.yun.train.exception.BusinessException;
 import com.yun.train.exception.BusinessExceptionEnum;
 import com.yun.train.req.ConfirmOrderDoReq;
 import com.yun.train.resp.CommonResp;
-import com.yun.train.service.ConfirmOrderService;
-import io.netty.util.internal.ObjectUtil;
+import com.yun.train.service.BeforeConfirmOrderService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -22,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class ConfirmOrderController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfirmOrderController.class);
     @Resource
-    private ConfirmOrderService confirmOrderService;
+    private BeforeConfirmOrderService beforeConfirmOrderService;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -46,7 +44,7 @@ public class ConfirmOrderController {
             // 验证通过后，移除验证码
             stringRedisTemplate.delete(imageCodeToken);
         }
-        confirmOrderService.doConfirm(req);
+        beforeConfirmOrderService.beforeDoConfirm(req);
         return new CommonResp<>();
     }
     /**

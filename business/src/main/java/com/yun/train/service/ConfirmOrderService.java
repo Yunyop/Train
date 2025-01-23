@@ -118,8 +118,9 @@ public class ConfirmOrderService {
     }
 
 
-    @SentinelResource(value = "doConfirm",blockHandler = "doConfirmBlock")
+    @SentinelResource(value = "BeforeDoConfirm",blockHandler = "doConfirmBlock")
     public void doConfirm(ConfirmOrderDoReq req) {
+
 //        校验令牌余量
         boolean validSkToken=skTokenService.validSkToken(req.getDate(),req.getTrainCode(),req.getMemberId());
         if (validSkToken) {
@@ -128,6 +129,8 @@ public class ConfirmOrderService {
             LOGGER.info("令牌校验不通过");
             throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_SK_TOKEN_FAIL);
         }
+
+//        获取车次锁
         String lockKey= RedisKeyPreEnum.CONFIRM_ORDER + "-" + DateUtil.formatDate(req.getDate())+"-"+req.getTrainCode();
 //        setIfabsent就是对应redis的setnx
         Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockKey, lockKey, 5, TimeUnit.SECONDS);
@@ -139,6 +142,7 @@ public class ConfirmOrderService {
             throw
                     new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_LOCK_FAIL);
         }
+
 //        RLock lock = null;
 
         /*
