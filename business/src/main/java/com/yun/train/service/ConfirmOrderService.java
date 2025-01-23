@@ -122,15 +122,15 @@ public class ConfirmOrderService {
     public void doConfirm(ConfirmOrderDoReq req) {
 
 //        校验令牌余量
-        boolean validSkToken=skTokenService.validSkToken(req.getDate(),req.getTrainCode(),req.getMemberId());
-        if (validSkToken) {
-            LOGGER.info("令牌校验通过");
-        }else {
-            LOGGER.info("令牌校验不通过");
-            throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_SK_TOKEN_FAIL);
-        }
-
-//        获取车次锁
+//        boolean validSkToken=skTokenService.validSkToken(req.getDate(),req.getTrainCode(),req.getMemberId());
+//        if (validSkToken) {
+//            LOGGER.info("令牌校验通过");
+//        }else {
+//            LOGGER.info("令牌校验不通过");
+//            throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_SK_TOKEN_FAIL);
+//        }
+//
+//        获取分布式锁
         String lockKey= RedisKeyPreEnum.CONFIRM_ORDER + "-" + DateUtil.formatDate(req.getDate())+"-"+req.getTrainCode();
 //        setIfabsent就是对应redis的setnx
         Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockKey, lockKey, 5, TimeUnit.SECONDS);
@@ -183,22 +183,40 @@ public class ConfirmOrderService {
             String start = req.getStart();
             String end = req.getEnd();
             List<ConfirmOrderTicketReq> tickets = req.getTickets();
+//
+////        保存确认订单表，状态初始
+//            DateTime now = DateTime.now();
+//            ConfirmOrder confirmOrder = new ConfirmOrder();
+//            confirmOrder.setId(SnowUtil.getSnowflakeNextId());
+//            confirmOrder.setCreateTime(now);
+//            confirmOrder.setUpdateTime(now);
+//            confirmOrder.setMemberId(req.getMemberId());
+//            confirmOrder.setDate(date);
+//            confirmOrder.setTrainCode(trainCode);
+//            confirmOrder.setStart(start);
+//            confirmOrder.setEnd(end);
+//            confirmOrder.setDailyTrainTicketId(req.getDailyTrainTicketId());
+//            confirmOrder.setStatus(ConfirmOrderStatusEnum.INIT.getCode());
+//            confirmOrder.setTickets(JSON.toJSONString(tickets));
+//            confirmOrderMapper.insert(confirmOrder);
 
-//        保存确认订单表，状态初始
-            DateTime now = DateTime.now();
-            ConfirmOrder confirmOrder = new ConfirmOrder();
-            confirmOrder.setId(SnowUtil.getSnowflakeNextId());
-            confirmOrder.setCreateTime(now);
-            confirmOrder.setUpdateTime(now);
-            confirmOrder.setMemberId(LoginMemberContext.getId());
-            confirmOrder.setDate(date);
-            confirmOrder.setTrainCode(trainCode);
-            confirmOrder.setStart(start);
-            confirmOrder.setEnd(end);
-            confirmOrder.setDailyTrainTicketId(req.getDailyTrainTicketId());
-            confirmOrder.setStatus(ConfirmOrderStatusEnum.INIT.getCode());
-            confirmOrder.setTickets(JSON.toJSONString(tickets));
-            confirmOrderMapper.insert(confirmOrder);
+//            从数据库里面查出订单
+            ConfirmOrderExample confirmOrderExample = new ConfirmOrderExample();
+            confirmOrderExample.setOrderByClause("id asc");
+            ConfirmOrderExample.Criteria criteria = confirmOrderExample.createCriteria();
+            criteria.andDateEqualTo(req.getDate())
+                    .andTrainCodeEqualTo(req.getTrainCode())
+                    .andMemberIdEqualTo(req.getMemberId())
+                    .andStatusEqualTo(ConfirmOrderStatusEnum.INIT.getCode());
+            List<ConfirmOrder> confirmOrderList = confirmOrderMapper.selectByExampleWithBLOBs(confirmOrderExample);
+            ConfirmOrder confirmOrder;
+            if (CollUtil.isEmpty(confirmOrderList)) {
+                LOGGER.info("找不到原始订单，结束");
+                return;
+            }else {
+                LOGGER.info("本次处理{}条确认订单",confirmOrderList.size());
+                confirmOrder = confirmOrderList.get(0);
+            }
 
 //        查出余票记录，需要得到真实库存
             DailyTrainTicket dailyTrainTicket = dailyTrainTicketService.selectByUnique(date,trainCode,start,end);
@@ -289,8 +307,8 @@ public class ConfirmOrderService {
 //
 //            LOGGER.info("购票异常",e);
         } finally {
-            LOGGER.info("购票流程结束，释放锁!lockKey:{}",lockKey);
-            redisTemplate.delete(lockKey);
+//            LOGGER.info("购票流程结束，释放锁!lockKey:{}",lockKey);
+//            redisTemplate.delete(lockKey);
 //            if (lock != null&&lock.isHeldByCurrentThread()) {
 //                lock.unlock();
 //            }
