@@ -307,8 +307,8 @@ public class ConfirmOrderService {
 //
 //            LOGGER.info("购票异常",e);
         } finally {
-//            LOGGER.info("购票流程结束，释放锁!lockKey:{}",lockKey);
-//            redisTemplate.delete(lockKey);
+            LOGGER.info("购票流程结束，释放锁!lockKey:{}",lockKey);
+            redisTemplate.delete(lockKey);
 //            if (lock != null&&lock.isHeldByCurrentThread()) {
 //                lock.unlock();
 //            }
