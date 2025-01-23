@@ -138,9 +138,12 @@ public class ConfirmOrderService {
             LOGGER.info("恭喜抢到锁了!lockKey:{}",lockKey);
         }else {
 //            只是没抢到锁，不知道票卖完没有
-            LOGGER.info("很遗憾没抢到锁！lockKey:{}",lockKey);
-            throw
-                    new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_LOCK_FAIL);
+//            LOGGER.info("很遗憾没抢到锁！lockKey:{}",lockKey);
+//            throw
+//                    new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_LOCK_FAIL);
+
+            LOGGER.info("没抢到锁，有其它消费线程正在出票，不做任何处理");
+            return;
         }
 
 //        RLock lock = null;
