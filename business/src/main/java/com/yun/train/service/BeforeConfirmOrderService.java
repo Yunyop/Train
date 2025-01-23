@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.yun.train.enums.RedisKeyPreEnum;
+import com.yun.train.enums.RocketMQTopicEnum;
 import com.yun.train.exception.BusinessException;
 import com.yun.train.exception.BusinessExceptionEnum;
 import com.yun.train.feign.MemberFeign;
@@ -12,6 +13,7 @@ import com.yun.train.mapper.DailyTrainSeatMapper;
 import com.yun.train.mapper.cust.DailyTrainTicketMapperCust;
 import com.yun.train.req.ConfirmOrderDoReq;
 import jakarta.annotation.Resource;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,25 +27,14 @@ public class BeforeConfirmOrderService {
 
     private static final Logger LOGGER= LoggerFactory.getLogger(BeforeConfirmOrderService.class);
 
-
-    @Resource
-    private DailyTrainSeatMapper dailyTrainSeatMapper;
-
-    @Resource
-    private DailyTrainTicketMapperCust dailyTrainTicketMapperCust;
-
-    @Resource
-    private MemberFeign memberFeign;
-
-    @Resource
-    private ConfirmOrderMapper confirmOrderMapper;
-
-
     @Autowired
     private StringRedisTemplate redisTemplate;
 
     @Resource
     private SkTokenService skTokenService;
+
+    @Resource
+    public RocketMQTemplate rocketMQTemplate;
 
 
     @SentinelResource(value = "beforeDoConfirm",blockHandler = "beforeDoConfirmBlock")

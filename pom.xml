@@ -103,6 +103,12 @@
                 </exclusions>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>2.3.1</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>
