@@ -90,7 +90,8 @@ public class ConfirmOrderService {
             confirmOrderMapper.updateByPrimaryKey(confirmOrder);
         }
     }
-    public PageResp<ConfirmOrderQueryResp> queryList(ConfirmOrderQueryReq req){
+
+    public PageResp<ConfirmOrderQueryResp> queryList(ConfirmOrderQueryReq req) {
         ConfirmOrderExample confirmOrderExample = new ConfirmOrderExample();
         confirmOrderExample.setOrderByClause("id desc");
         ConfirmOrderExample.Criteria criteria = confirmOrderExample.createCriteria();
@@ -99,6 +100,7 @@ public class ConfirmOrderService {
         LOGGER.info("每页条数：{}",req.getSize());
         PageHelper.startPage(req.getPage(),req.getSize());
         List<ConfirmOrder> confirmOrderList = confirmOrderMapper.selectByExample(confirmOrderExample);
+
         PageInfo<ConfirmOrder> pageInfo = new PageInfo<>(confirmOrderList);
 
         LOGGER.info("总行数：{}",pageInfo.getTotal());
@@ -113,12 +115,12 @@ public class ConfirmOrderService {
         pageResp.setTotal(pageInfo.getTotal());
         return pageResp;
     }
-    public void delete(long id) {
+    public void delete(Long id) {
         confirmOrderMapper.deleteByPrimaryKey(id);
     }
 
 
-    @SentinelResource(value = "BeforeDoConfirm",blockHandler = "doConfirmBlock")
+    @SentinelResource(value = "doConfirm", blockHandler = "doConfirmBlock")
     public void doConfirm(ConfirmOrderMQDto dto) {
 
 //        校验令牌余量
@@ -149,8 +151,12 @@ public class ConfirmOrderService {
 //        RLock lock = null;
 
         /*
-
-         */
+            关于红锁，看16.7节：
+            A B C D E
+            1: A B C D E
+            2: C D E
+            3: C
+        */
         try {
 //            // 使用redisson，自带看门狗
 //            lock = redissonClient.getLock(lockKey);
@@ -232,8 +238,8 @@ public class ConfirmOrderService {
     public void updateStatus(ConfirmOrder confirmOrder) {
         ConfirmOrder confirmOrderForUpdate = new ConfirmOrder();
         confirmOrderForUpdate.setId(confirmOrder.getId());
-        confirmOrderForUpdate.setStatus(confirmOrder.getStatus());
         confirmOrderForUpdate.setUpdateTime(new Date());
+        confirmOrderForUpdate.setStatus(confirmOrder.getStatus());
         confirmOrderMapper.updateByPrimaryKeySelective(confirmOrderForUpdate);
     }
 
@@ -262,6 +268,7 @@ public class ConfirmOrderService {
         LOGGER.info("将确认订单更新成处理中，避免重复处理，confirm_order.id: {}", confirmOrder.getId());
         confirmOrder.setStatus(ConfirmOrderStatusEnum.PENDING.getCode());
         updateStatus(confirmOrder);
+
         Date date = req.getDate();
         String trainCode = req.getTrainCode();
         String start = req.getStart();

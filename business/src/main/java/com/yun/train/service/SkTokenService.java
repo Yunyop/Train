@@ -22,6 +22,7 @@ import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +46,9 @@ public class SkTokenService {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
+
+    @Value("${spring.profiles.active}")
+    private String env;
 
     /**
      * 初始化
@@ -127,14 +131,16 @@ public class SkTokenService {
      */
     public boolean validSkToken(Date date,String trainCode,Long memberId) {
         LOGGER.info("会员[{}]获取日期[{}]车次[{}]的令牌开始",memberId,DateUtil.formatDate(date),trainCode);
-        String lockKey = RedisKeyPreEnum.CONFIRM_ORDER + "-" + DateUtil.formatDate(date)+"-"+trainCode+"-"+memberId;
-        Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockKey, lockKey, 5, TimeUnit.SECONDS);
-        if(Boolean.TRUE.equals(setIfAbsent)){
-            LOGGER.info("恭喜抢到令牌锁了!lockKey:{}",lockKey);
-        }else {
-//            只是没抢到锁，不知道票卖完没有
-            LOGGER.info("很遗憾没抢到令牌锁！lockKey:{}",lockKey);
-            return false;
+
+        if (!env.equals("dev")) {
+            String lockKey = RedisKeyPreEnum.CONFIRM_ORDER + "-" + DateUtil.formatDate(date)+"-"+trainCode+"-"+memberId;
+            Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockKey, lockKey, 5, TimeUnit.SECONDS);
+            if(Boolean.TRUE.equals(setIfAbsent)){
+                LOGGER.info("恭喜抢到令牌锁了!lockKey:{}",lockKey);
+            }else {
+                LOGGER.info("很遗憾没抢到令牌锁！lockKey:{}",lockKey);
+                return false;
+            }
         }
         String skTokenCountKey = RedisKeyPreEnum.SK_TOKEN_COUNT+"-" + DateUtil.formatDate(date)+"-"+trainCode;
         Object skTokenCont = redisTemplate.opsForValue().get(skTokenCountKey);

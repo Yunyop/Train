@@ -14,6 +14,7 @@ token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE3MzY1ODM2MjAsIm1vYmlsZSI6
     "passengerType":"1",
     "seatTypeCode":"1"
   }],
+
   "trainCode":"G1"
 }
 
