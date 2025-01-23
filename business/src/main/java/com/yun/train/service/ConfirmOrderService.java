@@ -194,7 +194,19 @@ public class ConfirmOrderService {
 
                 }
 //                一条一条的卖
-                confirmOrderList.forEach(this::sell);
+                confirmOrderList.forEach(confirmOrder -> {
+                    try {
+                        sell(confirmOrder);
+                    }catch (BusinessException e){
+                        if (e.getBusinessExceptionEnum().equals(BusinessExceptionEnum.CONFIRM_ORDER_TICKET_COUNT_ERROR)){
+                            LOGGER.info("本订单余票不足，继续售卖下一个订单");
+                            confirmOrder.setStatus(ConfirmOrderStatusEnum.EMPTY.getCode());
+                            updateStatus(confirmOrder);
+                        }else {
+                            throw e;
+                        }
+                    }
+                });
             }
 //            LOGGER.info("购票流程结束，释放锁!lockKey:{}",lockKey);
 //            redisTemplate.delete(lockKey);
