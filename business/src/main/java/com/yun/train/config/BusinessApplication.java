@@ -12,6 +12,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.List;
 @EnableFeignClients("com.yun.train.feign")
 @EnableWebMvc
 @EnableCaching
+@EnableAsync
 public class BusinessApplication {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BusinessApplication.class);

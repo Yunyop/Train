@@ -35,8 +35,10 @@ import jakarta.annotation.Resource;
 //import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 //import org.stringtemplate.v4.ST;
 
@@ -120,9 +122,12 @@ public class ConfirmOrderService {
     }
 
 
+    @Async
     @SentinelResource(value = "doConfirm", blockHandler = "doConfirmBlock")
     public void doConfirm(ConfirmOrderMQDto dto) {
 
+        MDC.put("LOG_ID", dto.getLogId());
+        LOGGER.info("异步出票开始{}",dto);
 //        校验令牌余量
 //        boolean validSkToken=skTokenService.validSkToken(dto.getDate(),dto.getTrainCode(),dto.getMemberId());
 //        if (validSkToken) {
