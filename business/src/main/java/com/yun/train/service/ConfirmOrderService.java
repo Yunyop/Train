@@ -249,6 +249,13 @@ public class ConfirmOrderService {
      */
 
     private void sell(ConfirmOrder confirmOrder) {
+
+//        为了演示效果，每次出票增加200毫秒延时
+        try{
+            Thread.sleep(200);
+        }catch(InterruptedException e){
+            throw new RuntimeException(e);
+        }
 //        构造ConfirmOrderDoReq
         ConfirmOrderDoReq req = new ConfirmOrderDoReq();
         req.setMemberId(confirmOrder.getMemberId());
