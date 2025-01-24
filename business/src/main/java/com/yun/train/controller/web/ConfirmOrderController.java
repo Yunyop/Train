@@ -6,6 +6,7 @@ import com.yun.train.exception.BusinessExceptionEnum;
 import com.yun.train.req.ConfirmOrderDoReq;
 import com.yun.train.resp.CommonResp;
 import com.yun.train.service.BeforeConfirmOrderService;
+import com.yun.train.service.ConfirmOrderService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -28,6 +29,8 @@ public class ConfirmOrderController {
 
     @Value("${spring.profiles.active}")
     private String env;
+    @Autowired
+    private ConfirmOrderService confirmOrderService;
 
     @SentinelResource(value = "/web/confirmOrder/do",
             blockHandler = "doConfirmBlock")
@@ -54,6 +57,11 @@ public class ConfirmOrderController {
         }
         Long id = beforeConfirmOrderService.beforeDoConfirm(req);
         return new CommonResp<>(String.valueOf(id));
+    }
+    @GetMapping("/query-line-count/{id}")
+    public CommonResp<Integer> queryLineCount(@PathVariable Long id) {
+        Integer count= confirmOrderService.queryLineCount(id);
+        return new CommonResp<>(count);
     }
     /**
      * 降级方法，需包含限流方法的所有参数和BlockException参数
