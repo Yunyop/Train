@@ -52,8 +52,8 @@ public class ConfirmOrderController {
                 stringRedisTemplate.delete(imageCodeToken);
             }
         }
-        beforeConfirmOrderService.beforeDoConfirm(req);
-        return new CommonResp<>();
+        Long id = beforeConfirmOrderService.beforeDoConfirm(req);
+        return new CommonResp<>(String.valueOf(id));
     }
     /**
      * 降级方法，需包含限流方法的所有参数和BlockException参数
