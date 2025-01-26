@@ -70,6 +70,20 @@ public class ConfirmOrderDoReq {
      */
     private String logId;
 
+    /**
+     * 加入排队人数，用于体验排队功能
+     * @return
+     */
+    private int lineNumber;
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
+    }
+
     public Long getMemberId() {
         return memberId;
     }
@@ -163,6 +177,7 @@ public class ConfirmOrderDoReq {
         sb.append(", imageCode='").append(imageCode).append('\'');
         sb.append(", imageCodeToken='").append(imageCodeToken).append('\'');
         sb.append(", logId='").append(logId).append('\'');
+        sb.append(", lineNumber=").append(lineNumber);
         sb.append('}');
         return sb.toString();
     }

@@ -95,6 +95,11 @@
         </div>
         <div style="color: #999999">提示：您可以选择{{tickets.length}}个座位
         </div>
+        <br>
+        <div style="color: red">
+          体验排队购票：
+          <a-input-number v-model:value="lineNumber" :min="0" :max="20"/>
+        </div>
       </div>
 <!--      <br>-->
 <!--      最终购票：{{tickets}}-->
@@ -217,6 +222,7 @@ export default defineComponent({
     const visible=ref(false);
     const confirmOrderId=ref();
     const confirmOrderLineCount=ref(-1);
+    const lineNumber=ref(5);
 
 
     // 勾选或去掉某个乘客时，在购票列表加上或去掉一张表
@@ -386,7 +392,7 @@ export default defineComponent({
         tickets: tickets.value,
         imageCodeToken: imageCodeToken.value,
         imageCode: imageCode.value,
-        // lineNumber: lineNumber.value
+        lineNumber: lineNumber.value
       }).then((response) => {
         let data = response.data;
         if (data.success) {
@@ -548,6 +554,7 @@ export default defineComponent({
       confirmOrderId,
       confirmOrderLineCount,
       onCancelOrder,
+      lineNumber,
     };
   },
 });
