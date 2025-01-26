@@ -149,6 +149,8 @@
         <loading-outlined/>您前面还有{{confirmOrderLineCount}}位用户在购票，排队中
       </div>
     </div>
+    <br>
+    <a-button danger type="primary" @click="onCancelOrder">取消购票</a-button>
   </a-modal>
 </template>
 <script >
@@ -490,6 +492,27 @@ export default defineComponent({
         notification.error({description: '验证码错误'});
       }
     };
+    /**
+     * 取消排队
+     */
+    const onCancelOrder = () => {
+      axios.get("/business/web/confirm-order/cancel/" + confirmOrderId.value).then((response) => {
+        let data = response.data;
+        if (data.success) {
+          let result = data.content;
+          if (result === 1) {
+            notification.success({description: "取消成功！"});
+            // 取消成功时，不用再轮询排队结果
+            clearInterval(queryLineCountInterval);
+            lineModalVisible.value = false;
+          } else {
+            notification.error({description: "取消失败！"});
+          }
+        } else {
+          notification.error({description: data.message});
+        }
+      });
+    };
 
     onMounted(() => {
       handelQueryPassenger();
@@ -524,6 +547,7 @@ export default defineComponent({
       lineModalVisible,
       confirmOrderId,
       confirmOrderLineCount,
+      onCancelOrder,
     };
   },
 });
