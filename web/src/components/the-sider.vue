@@ -45,6 +45,11 @@ export default defineComponent({
           <idcard-outlined />&nbsp;我的车票
         </router-link>
       </a-menu-item>
+      <a-menu-item key="/seat">
+        <router-link to="/seat">
+          <usergroup-add-outlined />座位销售
+        </router-link>
+      </a-menu-item>
     </a-menu>
   </a-layout-sider>
 </template>
