@@ -12,8 +12,10 @@ import com.yun.train.domain.*;
 import com.yun.train.mapper.DailyTrainSeatMapper;
 import com.yun.train.req.DailyTrainSeatQueryReq;
 import com.yun.train.req.DailyTrainSeatSaveReq;
+import com.yun.train.req.SeatSellReq;
 import com.yun.train.resp.PageResp;
 import com.yun.train.resp.DailyTrainSeatQueryResp;
+import com.yun.train.resp.SeatSellResp;
 import com.yun.train.util.SnowUtil;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
@@ -143,6 +145,20 @@ public class DailyTrainSeatService {
                 .andTrainCodeEqualTo(trainCode)
                 .andCarriageIndexEqualTo(carriageIndex);
         return dailyTrainSeatMapper.selectByExample(example);
+    }
+    /**
+     * 查询某日某车次的所有座位
+     */
+    public List<SeatSellResp> querySeatSell(SeatSellReq req) {
+        Date date = req.getDate();
+        String trainCode = req.getTrainCode();
+        LOGGER.info("查询日期【{}】车次【{}】的座位销售信息", DateUtil.formatDate(date), trainCode);
+        DailyTrainSeatExample dailyTrainSeatExample = new DailyTrainSeatExample();
+        dailyTrainSeatExample.setOrderByClause("`carriage_index` asc, carriage_seat_index asc");
+        dailyTrainSeatExample.createCriteria()
+                .andDateEqualTo(date)
+                .andTrainCodeEqualTo(trainCode);
+        return BeanUtil.copyToList(dailyTrainSeatMapper.selectByExample(dailyTrainSeatExample), SeatSellResp.class);
     }
 
 }
