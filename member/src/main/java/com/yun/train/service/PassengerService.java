@@ -29,6 +29,7 @@ public class PassengerService {
 
     @Resource
     private PassengerMapper passengerMapper;
+
     public void save(PassengerSaveReq req) {
         DateTime now = DateTime.now();
         Passenger passenger = BeanUtil.copyProperties(req, Passenger.class);
@@ -43,6 +44,7 @@ public class PassengerService {
             passengerMapper.updateByPrimaryKey(passenger);
         }
     }
+
     public PageResp<PassengerQueryResp> queryList(PassengerQueryReq req){
         PassengerExample passengerExample = new PassengerExample();
         passengerExample.setOrderByClause("id desc");
@@ -68,9 +70,11 @@ public class PassengerService {
         pageResp.setTotal(pageInfo.getTotal());
         return pageResp;
     }
+
     public void delete(long id) {
         passengerMapper.deleteByPrimaryKey(id);
     }
+
     /**
      * 查询我所有的乘客
      */

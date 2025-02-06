@@ -69,7 +69,6 @@ public class MemberService {
 
     }
 
-
     public MemberLoginResp login(MemberLoginReq memberLoginReq){
         String mobile = memberLoginReq.getMobile();
         String code = memberLoginReq.getCode();

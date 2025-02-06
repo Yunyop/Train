@@ -30,6 +30,7 @@ public class TicketService {
 
     @Resource
     private TicketMapper ticketMapper;
+
     public void save(@Valid MemberTicketReq req) throws Exception {
 //        LOGGER.info("seata全局事务ID save:{}", RootContext.getXID());
         DateTime now = DateTime.now();
@@ -43,6 +44,7 @@ public class TicketService {
 //            throw new Exception("测试异常11");
 //        }
     }
+
     public PageResp<TicketQueryResp> queryList(TicketQueryReq req){
         TicketExample ticketExample = new TicketExample();
         ticketExample.setOrderByClause("id desc");
@@ -69,7 +71,9 @@ public class TicketService {
         pageResp.setTotal(pageInfo.getTotal());
         return pageResp;
     }
+
     public void delete(long id) {
         ticketMapper.deleteByPrimaryKey(id);
     }
+
 }

@@ -251,3 +251,38 @@ CREATE TABLE `sk_token` (
                             UNIQUE KEY `date_train_code_unique` (`date`,`train_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='秒杀令牌'
 
+-- Create station table (as provided in your request)
+CREATE TABLE `station` (
+                           `id` bigint NOT NULL COMMENT 'id',
+                           `name` varchar(20) NOT NULL COMMENT '站名',
+                           `name_pinyin` varchar(50) NOT NULL COMMENT '站名拼音',
+                           `name_py` varchar(50) NOT NULL COMMENT '站名拼音首字母',
+                           `create_time` datetime(3) COMMENT '新增时间',
+                           `update_time` datetime(3) COMMENT '修改时间',
+                           PRIMARY KEY (`id`),
+                           UNIQUE KEY `name_unique` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='车站';
+
+-- Insert sample data into station table
+INSERT INTO `station` (id, name, name_pinyin, name_py, create_time, update_time)
+VALUES
+    (1, '北京南', 'beijingnan', 'bjn', NOW(), NOW()),
+    (2, '天津南', 'tianjinnan', 'tjn', NOW(), NOW()),
+    (3, '济南西', 'jinanxi', 'jnx', NOW(), NOW()),
+    (4, '南京南', 'nanjingnan', 'njn', NOW(), NOW()),
+    (5, '上海虹桥', 'shanghaihongqiao', 'shhq', NOW(), NOW()),
+    (6, '北京西', 'beijingxi', 'bjx', NOW(), NOW()),
+    (7, '石家庄', 'shijiazhuang', 'sjz', NOW(), NOW()),
+    (8, '郑州东', 'zhengzhoudong', 'zzd', NOW(), NOW()),
+    (9, '武汉', 'wuhan', 'wh', NOW(), NOW()),
+    (10, '长沙南', 'changshanan', 'csn', NOW(), NOW()),
+    (11, '广州南', 'guangzhounan', 'gzn', NOW(), NOW()),
+    (12, '保定', 'baoding', 'bd', NOW(), NOW()),
+    (13, '郑州', 'zhengzhou', 'zz', NOW(), NOW()),
+    (14, '西安', 'xian', 'xa', NOW(), NOW()),
+    (15, '成都', 'chengdu', 'cd', NOW(), NOW()),
+    (16, '武昌', 'wuchang', 'wc', NOW(), NOW()),
+    (17, '长沙', 'changsha', 'cs', NOW(), NOW()),
+    (18, '广州', 'guangzhou', 'gz', NOW(), NOW()),
+    (19, '深圳北', 'shenzhenbei', 'szb', NOW(), NOW()),
+    (20, '杭州东', 'hangzhoudong', 'hzd', NOW(), NOW());

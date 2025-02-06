@@ -18,13 +18,11 @@ import java.util.List;
 public class PassengerController {
     @Resource
     private PassengerService passengerService;
-
     @PostMapping("/save")
     public CommonResp<Object> save(@Valid @RequestBody PassengerSaveReq req) {
         passengerService.save(req);
         return new CommonResp<>();
     }
-
     @GetMapping("/query-list")
     public CommonResp<PageResp<PassengerQueryResp>> queryList(@Valid PassengerQueryReq req) {
         req.setMemberId(LoginMemberContext.getId());
