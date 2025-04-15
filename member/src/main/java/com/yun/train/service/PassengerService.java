@@ -26,7 +26,6 @@ public class PassengerService {
 
     private static final Logger LOGGER= LoggerFactory.getLogger(PassengerService.class);
 
-
     @Resource
     private PassengerMapper passengerMapper;
 
